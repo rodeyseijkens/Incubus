@@ -31,7 +31,9 @@ GJ.Core = (function ()
         this.__classId = ((( 1 + Math.random()) * 0x10000) | 0) + new Date().getTime();
 
         // Check if server or client
-        if(typeof window) this.init();
+        if(typeof window == 'object') {
+            this.init();
+        }
 
 
         this.__initTicker();
