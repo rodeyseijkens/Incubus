@@ -16,15 +16,18 @@ if (GJ == null || typeof(GJ) != 'object') {
 GJ.Game = (function ()
 {
 
-    window.requestAnimationFrame = ( function() {
-        return window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame ||
-            window.oRequestAnimationFrame ||
-            window.msRequestAnimationFrame ||
-            function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
-                window.setTimeout( callback, 1000 / 60 );
-            };
-    } )();
+//    window.requestAnimationFrame = ( function() {
+//        return window.webkitRequestAnimationFrame ||
+//            window.mozRequestAnimationFrame ||
+//            window.oRequestAnimationFrame ||
+//            window.msRequestAnimationFrame ||
+//            function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
+//                window.setTimeout( callback, 1000 / 60 );
+//            };
+//    } )();
+
+
+
 
     var SETTINGS = {
         'debug': false
@@ -137,7 +140,10 @@ GJ.Game = (function ()
     };
 
     Game.prototype.render = function() {
-        requestAnimationFrame(this.render.bind(this));
+        //requestAnimationFrame(this.render.bind(this));
+
+        setInterval(this.render.bind(this), 1000 / 60);
+
         for (var i = 0, l = this.entities.length; i < l; i++) {
             this.entities[i].render();
         }
@@ -146,8 +152,7 @@ GJ.Game = (function ()
         this.world.DrawDebugData();
         this.world.ClearForces();
 
-
-        console.log('render');
+//        console.log('render');
 
     };
 
