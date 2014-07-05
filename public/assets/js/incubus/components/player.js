@@ -75,6 +75,7 @@ GJ.Player = (function ()
     Player.prototype.init = function ()
     {
         this.player = this.create();
+        this.player.SetFixedRotation(true);
         this.bind();
     };
 
@@ -82,12 +83,17 @@ GJ.Player = (function ()
     {
         if(KEYS[39]) {
             console.log('right');
-            this.player.SetLinearVelocity(new b2Vec2(5, 0));
+            this.player.ApplyImpulse(new b2Vec2(5, 0), this.player.GetWorldCenter());
         }
 
         if(KEYS[37]) {
             console.log('left');
-            this.player.SetLinearVelocity(new b2Vec2(-5, 0));
+            this.player.ApplyImpulse(new b2Vec2(-5, 0), this.player.GetWorldCenter());
+        }
+
+        if(KEYS[38]) {
+            console.log('top');
+            this.player.ApplyImpulse(new b2Vec2(0, -5), this.player.GetWorldCenter());
         }
     };
 
