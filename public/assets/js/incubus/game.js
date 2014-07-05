@@ -64,10 +64,14 @@ GJ.Game = (function ()
     Game.prototype.init = function ()
     {
 
-       // this.stage.width( $(window).width() );
-       // this.stage.height( $(window).height() );
+        //this.stage[0].width = window.innerWidth;
+        //this.stage[0].height = window.innerHeight;
+        this.stage.width( 800 );
+        this.stage.height( 700 );
 
-        this.ctx = this.stage[0].getContext('2d');
+        this.canvas = $('#canvas');
+
+        this.ctx = this.canvas[0].getContext('2d');
         this.scaleFactor = 30;
         this.entities = [];
 
@@ -82,9 +86,10 @@ GJ.Game = (function ()
         this.world.SetDebugDraw(this.debugDraw);
 
         this._setWalls();
-        this.entities.push(new GJ.Player(this.world, {}));
+        this.entities.push(new GJ.Player(this.world, this.stage, {}));
 
     };
+
     
     Game.prototype._setWalls = function() {
 
@@ -98,7 +103,7 @@ GJ.Game = (function ()
             var size = (30 / this.scaleFactor);
             ballDef.position.Set(xpos, ypos);
             var ballFixture = new b2FixtureDef;
-            ballFixture.density = 1;
+            ballFixture.density = 10;
             ballFixture.friction = .2;
             ballFixture.restitution = .5;
             ballFixture.shape =  new b2PolygonShape(size);
@@ -109,12 +114,14 @@ GJ.Game = (function ()
         }
 
 
-        var wallDefs = [{x:8.3,y:.03,w:8.3 ,h:.03}, //top
-            {x:8.3,y:13.33,w:8.3 ,h:.03},   //bottom
-            {x:0,y:6.67,w:.03 ,h:6.67},      //left
-            {x:16.7,y:6.67,w:.03 ,h:6.67}];     //right
+        var wallDefs = [
+            {x: (this.stage.width() / 2) / 30, y: 0, w: (this.stage.width() / 2) / 30, h: 0}, //top
+            {x: (this.stage.width() / 2) / 30, y: (this.stage.height() / 30),w: (this.stage.width() / 2) / 30 ,h: 0},   //bottom
+            {x: 0, y: (this.stage.height() / 2) / 30, w: 0 , h: (this.stage.height() / 2) / 30},      //left
+            {x: (this.stage.width() / 30), y: (this.stage.height() / 2) / 30, w: 0 , h: (this.stage.height() / 2) / 30}      //left
+        ];
         var walls = [];
-        for (var j = 0; j <wallDefs.length; j++) {
+        for (var j = 0; j < wallDefs.length; j++) {
             var wallDef = new b2BodyDef;
             wallDef.type = b2Body.b2_staticBody;
             wallDef.position.Set(wallDefs[j].x, wallDefs[j].y);

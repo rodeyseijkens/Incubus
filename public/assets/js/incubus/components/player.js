@@ -40,10 +40,11 @@ GJ.Player = (function ()
     var INSTANCE = null;
 
     // Constructor
-    var Player = function(world, settings)
+    var Player = function(world, stage, settings)
     {
 
         this.world = world;
+        this.stage = stage;
         this.__classId = ((( 1 + Math.random()) * 0x10000) | 0) + new Date().getTime();
 
         this.settings = $.extend(SETTINGS, settings);
@@ -65,8 +66,24 @@ GJ.Player = (function ()
         ballFixture.restitution = .5;
         ballFixture.shape =  new b2PolygonShape(size);
         ballFixture.shape.SetAsBox(size, size);
-        var newBall = this.world.CreateBody(ballDef)
+        var newBall = this.world.CreateBody(ballDef);
         newBall.CreateFixture(ballFixture);
+        newBall.SetUserData({w: size * 30, h: size * 30});
+
+        this.node = document.createElement('div');
+        this.node.className = 'player';
+        this.node.style.width = (size * 30) * 2 + "px";
+        this.node.style.height = (size * 30) * 2 + "px";
+
+        var nxpos = (xpos * 30) - (size * 30);
+        var nypos = (ypos * 30) - (size * 30);
+
+        this.node.style.webkitTransform = 'matrix(1,0,0,1,' + nxpos + ',' + nypos + ')';
+
+
+//        this.node.style.left = (xpos * 30) / 2+ "px";
+//        this.node.style.top = (ypos * 30) / 2+ "px";
+        this.stage.append(this.node);
 
         return newBall;
     };
@@ -124,6 +141,13 @@ GJ.Player = (function ()
     Player.prototype.render = function()
     {
         this.move();
+        var userdata = this.player.GetUserData();
+
+        var nxpos = (this.player.GetWorldCenter().x * 30) - userdata.w;
+        var nypos = (this.player.GetWorldCenter().y * 30) - userdata.h;
+
+        this.node.style.webkitTransform = 'matrix(1,0,0,1,' + nxpos + ',' + nypos + ')';
+
     };
 
     // Force singleton (public)
