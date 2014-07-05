@@ -28,9 +28,6 @@ GJ.Game = (function ()
         } )();
     }
 
-
-
-
     var SETTINGS = {
         'debug': false
     };
@@ -83,7 +80,7 @@ GJ.Game = (function ()
         this.world.SetDebugDraw(this.debugDraw);
 
         this._setWalls();
-        //this.entities.push(new GJ.Player(this.world, {}));
+        this.entities.push(new GJ.Player(this.world, {}));
 
     };
     
