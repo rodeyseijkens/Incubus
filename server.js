@@ -8,6 +8,7 @@ var socket;
 var clients = [];
 
 var Box2D = require( './public/assets/js/libs/box2d.js' );
+eval( fs.readFileSync( './public/assets/js/incubus/components/player.js' ) + '' );
 eval( fs.readFileSync( './public/assets/js/incubus/game.js' ) + '' );
 eval( fs.readFileSync( './public/assets/js/incubus.js' ) + '' );
 

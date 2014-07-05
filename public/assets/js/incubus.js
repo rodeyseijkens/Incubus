@@ -35,7 +35,6 @@ GJ.Core = (function ()
             this.init();
         }
 
-
         this.__initTicker();
     };
 

@@ -15,16 +15,18 @@ if (GJ == null || typeof(GJ) != 'object') {
 // Game class (singleton)
 GJ.Game = (function ()
 {
-
-//    window.requestAnimationFrame = ( function() {
-//        return window.webkitRequestAnimationFrame ||
-//            window.mozRequestAnimationFrame ||
-//            window.oRequestAnimationFrame ||
-//            window.msRequestAnimationFrame ||
-//            function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
-//                window.setTimeout( callback, 1000 / 60 );
-//            };
-//    } )();
+    // Check if server or client
+    if(typeof window == 'object') {
+        window.requestAnimationFrame = ( function() {
+            return window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
+                    window.setTimeout( callback, 1000 / 60 );
+                };
+        } )();
+    }
 
 
 
@@ -79,9 +81,6 @@ GJ.Game = (function ()
         this.debugDraw.SetLineThickness(1.0);
         this.debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
         this.world.SetDebugDraw(this.debugDraw);
-
-
-
 
         this._setWalls();
         //this.entities.push(new GJ.Player(this.world, {}));
@@ -140,9 +139,15 @@ GJ.Game = (function ()
     };
 
     Game.prototype.render = function() {
-        //requestAnimationFrame(this.render.bind(this));
 
-        setInterval(this.render.bind(this), 1000 / 60);
+
+        // Check if server or client
+        if(typeof window == 'object') {
+            requestAnimationFrame(this.render.bind(this));
+        } else {
+            setInterval(this.render.bind(this), 1000 / 60);
+        }
+
 
         for (var i = 0, l = this.entities.length; i < l; i++) {
             this.entities[i].render();
