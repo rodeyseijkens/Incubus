@@ -63,8 +63,10 @@ GJ.Game = (function ()
     // Initialize (public)
     Game.prototype.init = function ()
     {
-        this.stage.width(600);//$(window).width());
-        this.stage.height(400);//$(window).height());
+
+       // this.stage.width( $(window).width() );
+       // this.stage.height( $(window).height() );
+
         this.ctx = this.stage[0].getContext('2d');
         this.scaleFactor = 30;
         this.entities = [];
@@ -144,7 +146,6 @@ GJ.Game = (function ()
         } else {
             setInterval(this.render.bind(this), 1000 / 60);
         }
-
 
         for (var i = 0, l = this.entities.length; i < l; i++) {
             this.entities[i].render();

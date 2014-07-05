@@ -60,8 +60,8 @@ GJ.Player = (function ()
         var size = (30 / 30);
         ballDef.position.Set(xpos, ypos);
         var ballFixture = new b2FixtureDef;
-        ballFixture.density = 1;
-        ballFixture.friction = .2;
+        ballFixture.density = 1.5;
+        ballFixture.friction = 1;
         ballFixture.restitution = .5;
         ballFixture.shape =  new b2PolygonShape(size);
         ballFixture.shape.SetAsBox(size, size);
@@ -82,13 +82,23 @@ GJ.Player = (function ()
     Player.prototype.move = function()
     {
         if(KEYS[39]) {
-            console.log('right');
-            this.player.ApplyImpulse(new b2Vec2(5, 0), this.player.GetWorldCenter());
+
+            var v = 0;
+
+            if(this.player.GetLinearVelocity().x < 5) {
+                v = 5;
+            }
+            this.player.ApplyImpulse(new b2Vec2(v, 0), this.player.GetWorldCenter());
+
         }
 
         if(KEYS[37]) {
-            console.log('left');
-            this.player.ApplyImpulse(new b2Vec2(-5, 0), this.player.GetWorldCenter());
+            var v = 0;
+
+            if(this.player.GetLinearVelocity().x > -5) {
+                v = -5;
+            }
+            this.player.ApplyImpulse(new b2Vec2(v, 0), this.player.GetWorldCenter());
         }
 
         if(KEYS[38]) {
