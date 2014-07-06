@@ -151,11 +151,9 @@ GJ.Game = (function ()
         this.entities.push(
             new GJ.Player( this.world, this.stage, this.layers, {} ),
             new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "dynamic", x: 30, y: 30, w: 30, h: 30, figure: "box", ui: true} ),
-            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1200, y: this.stage.height() -75, w: 270, h: 75, figure: "box", ui: false} ),
-            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1900, y: this.stage.height() -250, w: 170, h: 250, figure: "box", ui: false} )
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1200, y: this.stage.height() - 150, w: 270, h: 1, figure: "box", ui: false, element: "ground"} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1900, y: this.stage.height() - 150, w: 170, h: 150, figure: "box", ui: false, element: "entity"} )
         );
-
-
     };
 
 
@@ -191,19 +189,9 @@ GJ.Game = (function ()
         }
     };
 
-    Game.prototype.add = function ()
-    {
-
-    };
-
     Game.prototype.setClientID = function ( id )
     {
         this.clientID = id;
-    };
-
-    Game.prototype.setSocket = function ( socket )
-    {
-        this.socket = socket;
     };
 
     Game.prototype.serverEnities = function ( list )
@@ -265,14 +253,26 @@ GJ.Game = (function ()
         this.world.Step( 1 / 60, 10, 10 );
 //        this.world.DrawDebugData();
         this.world.ClearForces();
-
 //        console.log('render');
 
     };
 
-    Game.prototype.start = function ()
+    Game.prototype.start = function (socket)
     {
-        this.render();
+        this.socket = socket;
+
+        var self = this;
+
+        $("body").hammer().on( "doubletap", function ( event )
+        {
+            self.socket.emit('powerJump');
+        } );
+
+
+        this.render()
+
+
+
     };
 
 

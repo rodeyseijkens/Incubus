@@ -57,15 +57,14 @@ GJ.Core = (function ()
 
         this.game = new GJ.Game( stage, layers );
         this.serverToClient();
-        this.game.start();
+        this.game.start( this.socket );
     };
 
     Core.prototype.serverToClient = function ()
     {
         var self = this;
 
-        this.socket = io.connect( '10.22.244.14', { port: 1337, transports: [ 'websocket' ] } );
-        this.game.setSocket( this.socket );
+        this.socket = io.connect( '10.22.244.153', { port: 1337, transports: [ 'websocket' ] } );
 
         this.socket.on( 'connect', function ()
         {
@@ -87,6 +86,11 @@ GJ.Core = (function ()
         this.socket.on( 'clientEntitiesSend', function ( data )
         {
             self.game.serverEnities( data.enityList );
+        } );
+
+        this.socket.on( 'powerJump', function ()
+        {
+            self.game.entities[0].powerJump();
         } );
 
         this.socket.on( 'disconnect', function ()

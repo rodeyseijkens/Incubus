@@ -71,6 +71,8 @@ GJ.Obstacle = (function ()
             w = this.scaleDown(this.settings.w),
             h = this.scaleDown(this.settings.h);
 
+        var element = this.settings.element || "entity";
+
         obsDef.position.Set(x, y);
         var obsFix = new b2FixtureDef;
         obsFix.density = 1.5;
@@ -84,7 +86,7 @@ GJ.Obstacle = (function ()
 
         var newObs = this.world.CreateBody(obsDef);
         newObs.CreateFixture(obsFix);
-        newObs.SetUserData({element: "entity", w: this.scaleUp(w), h: this.scaleUp(h), ui: this.settings.ui, type: this.settings.type });
+        newObs.SetUserData({element: element, w: this.scaleUp(w), h: this.scaleUp(h), ui: this.settings.ui, type: this.settings.type });
 
         this.node = document.createElement('div');
         this.node.className = this.settings.classname;

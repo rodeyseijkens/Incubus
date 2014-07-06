@@ -131,7 +131,7 @@ GJ.Player = (function ()
             this.direction = "left";
         }
 
-        if ( KEYS[38] )
+        if ( KEYS[32] )
         {
             if(this.jumping) {
                 v = 0;
@@ -139,11 +139,6 @@ GJ.Player = (function ()
                 v = -80;
             }
             this.player.ApplyImpulse( new b2Vec2( 0, v ), this.player.GetWorldCenter() );
-        }
-
-        if( KEYS[32] )
-        {
-            this.powerJump();
         }
     };
 
@@ -156,7 +151,7 @@ GJ.Player = (function ()
         if(this.jumping) {
 
             var now = new Date().getTime();
-            if( (now - this.lastPowerJump) > 2000 ) {
+            if( (now - this.lastPowerJump) > 1000 ) {
                 this.player.ApplyImpulse( new b2Vec2( 0, -200 ), this.player.GetWorldCenter() );
                 this.lastPowerJump = new Date().getTime();
             }
@@ -216,14 +211,6 @@ GJ.Player = (function ()
             var key = e.which || e.keyCode;
             KEYS[key] = false;
         }, false );
-
-
-
-        $("body").hammer().on( "doubletap", function ( event )
-        {
-            alert('DOUBLE JUMP!!');
-
-        } );
     };
 
     Player.prototype.render = function ()

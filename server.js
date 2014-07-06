@@ -51,6 +51,14 @@ function onSocketConnection( client )
 
     client.emit( 'message', {"startId": clients.length} );
 
+    client.on( 'powerJump', function ()
+    {
+        for ( var i = 0; i < clients.length; i++ )
+        {
+            clients[i].emit( 'powerJump' );
+        }
+    } );
+
     client.on( 'serverEntitiesSend', function ( data )
     {
         // SEND DATA TO CLIENT
