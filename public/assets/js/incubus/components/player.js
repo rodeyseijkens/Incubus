@@ -111,9 +111,9 @@ GJ.Player = (function ()
         if(KEYS[39]) {
 
 
-            if ( this.player.GetLinearVelocity().x < 15 )
+            if ( this.player.GetLinearVelocity().x < 45 )
             {
-                v = 15;
+                v = 45;
             }
             this.player.ApplyImpulse( new b2Vec2( v, 0 ), this.player.GetWorldCenter() );
             this.direction = "right";
@@ -122,9 +122,9 @@ GJ.Player = (function ()
         if ( KEYS[37] )
         {
 
-            if ( this.player.GetLinearVelocity().x > -15 )
+            if ( this.player.GetLinearVelocity().x > -45 )
             {
-                v = -15;
+                v = -45;
             }
             this.player.ApplyImpulse( new b2Vec2( v, 0 ), this.player.GetWorldCenter() );
 

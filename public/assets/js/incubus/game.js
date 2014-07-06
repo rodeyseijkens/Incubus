@@ -151,8 +151,11 @@ GJ.Game = (function ()
         this.entities.push(
             new GJ.Player( this.world, this.stage, this.layers, {} ),
 //            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1200, y: this.stage.height() - 150, w: 270, h: 1, figure: "box", ui: false, element: "ground"} ),
-            new GJ.Obstacle( this.world, this.stage, {classname: "ground", type: "static", x: 0, y: this.stage.height() - 20, w: 10000, h: 10, figure: "box", ui: false, element: "ground"} ),
-            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "dynamic", x: 250, y: 50, w: 30, h: 30, figure: "box", ui: true} )
+            new GJ.Obstacle( this.world, this.stage, {classname: "ground", type: "static", x: 0, y: this.stage.height() - 20, w: 5200, h: 10, figure: "box", ui: false, element: "ground"} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "ground", type: "static", x: 7650, y: this.stage.height() - 20, w: 1750, h: 10, figure: "box", ui: false, element: "ground"} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "barrel", type: "static", x: 7500, y: this.stage.height() - 80, w: 41, h: 60, figure: "box", ui: false, element: "entity"} ),
+//            new GJ.Obstacle( this.world, this.stage, {classname: "barrel", type: "static", x: 8400, y: this.stage.height() - 80, w: 41, h: 60, figure: "box", ui: false, element: "entity"} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "dynamic", x: 250, y: 50, w: 30, h: 30, figure: "box", ui: false, element: "entity"} )
 //            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1900, y: this.stage.height() - 150, w: 170, h: 150, figure: "box", ui: false, element: "entity"} )
         );
     };
@@ -162,7 +165,7 @@ GJ.Game = (function ()
 
         var wallDefs = [
 //            {x: (this.stage.width() / 2) / 30, y: 0, w: (this.stage.width() / 2) / 30, h: 0}, //top
-//            {x: (this.stage.width() / 2) / 30, y: (this.stage.height() / 30), w: (this.stage.width() / 2) / 30, h: 0},   //bottom
+            {x: (this.stage.width() / 2) / 30, y: (this.stage.height() / 30), w: (this.stage.width() / 2) / 30, h: 0},   //bottom
             {x: 0, y: (this.stage.height() / 2) / 30, w: 0, h: (this.stage.height() / 2) / 30},      //left
             {x: (this.stage.width() / 30), y: (this.stage.height() / 2) / 30, w: 0, h: (this.stage.height() / 2) / 30}      //left
         ];

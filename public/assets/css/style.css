@@ -94,6 +94,13 @@ canvas {
     left: 0;
 }
 
+.ground {
+    background-color: red;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 .obstacle {
     background-color: red;
     position: absolute;
@@ -122,12 +129,23 @@ canvas {
 
 .grassF1 {
     background: url(../img/desktop/FOR_f1_grass.png) repeat-x center center; /* MEH */
-    background-size: 10%;
+    background-size: 20% 100%;
     height: 65px;
-    width: 10000px;
+    width: 5200px;
     display: block;
     position: absolute;
     bottom: -1px;
+}
+
+.grassF1-1 {
+    background: url(../img/desktop/FOR_f1_grass.png) repeat-x center center;
+    background-size: 20% 100%;
+    height: 65px;
+    width: 3500px;
+    display: block;
+    position: absolute;
+    bottom: -1px;
+    left: 5900px;
 }
 
 .bushF2 {
@@ -220,4 +238,52 @@ canvas {
     position: absolute;
     bottom: -1px;
     left: 3050px;
+}
+
+.wall {
+    background: url(../img/desktop/FOR_b2_wall.png) repeat-x center center;
+    background-size: 9% 100%;
+    height: 120px;
+    width: 4022px;
+    display: block;
+    position: absolute;
+    bottom: 136px;
+    left: 2790px;
+}
+
+.gate {
+    background: url(../img/desktop/Town_f1_gate.png) no-repeat center center;
+    height: 720px;
+    width: 437px;
+    display: block;
+    position: absolute;
+    bottom: -20px;
+    left: 5930px;
+}
+
+.lantern {
+    background: url(../img/desktop/Town_f2_lantern.png) no-repeat center center;
+    height: 680px;
+    width: 134px;
+    display: block;
+    position: absolute;
+    bottom: -20px;
+    left: 10000px;
+}
+
+.barrel {
+    background: url(../img/desktop/Town_b_barrel.png) no-repeat center center;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.lion {
+    background: url(../img/desktop/Town_b_lion.png) no-repeat center center;
+    height: 400px;
+    width: 329px;
+    display: block;
+    position: absolute;
+    bottom: -20px;
+    left: 8230px;
 }
