@@ -96,9 +96,11 @@ canvas {
 
 .obstacle, .bridge, .holder {
     background-color: red;
+    opacity: .5;
     position: absolute;
     top: 0;
     left: 0;
+    display: none;
 }
 
 .light {
