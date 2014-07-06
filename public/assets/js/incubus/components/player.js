@@ -66,8 +66,8 @@ GJ.Player = (function ()
     {
         var ballDef = new b2BodyDef;
         ballDef.type = b2Body.b2_dynamicBody;
-        var ypos = 2;
-        var xpos = 2;
+        var ypos = 12;
+        var xpos = 12;
         var size = (30 / 30);
         ballDef.position.Set(xpos, ypos);
         var ballFixture = new b2FixtureDef;
@@ -245,9 +245,9 @@ GJ.Player = (function ()
 
         this.backLayer3.css( 'webkitTransform', 'translate(' + (stageStyle.e * 0.2) + 'px,' + 0 + 'px)' );
         this.backLayer2.css( 'webkitTransform', 'translate(' + (stageStyle.e * 0.6) + 'px,' + 0 + 'px)' );
-        this.backLayer1.css( 'webkitTransform', 'translate(' + (stageStyle.e) + 'px,' + 0 + 'px)' );
+        this.backLayer1.css( 'webkitTransform', 'translate(' + (stageStyle.e * 0.9) + 'px,' + 0 + 'px)' );
         this.frontLayer1.css( 'webkitTransform', 'translate(' + (stageStyle.e) + 'px,' + 0 + 'px)' );
-        this.frontLayer2.css( 'webkitTransform', 'translate(' + (stageStyle.e * 2) + 'px,' + 0 + 'px)' );
+        this.frontLayer2.css( 'webkitTransform', 'translate(' + (stageStyle.e * 1.5) + 'px,' + 0 + 'px)' );
 
     };
 
