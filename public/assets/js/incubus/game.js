@@ -151,8 +151,8 @@ GJ.Game = (function ()
         this.entities.push(
             new GJ.Player( this.world, this.stage, this.layers, {} ),
             new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "dynamic", x: 30, y: 30, w: 30, h: 30, figure: "box", ui: true} ),
-            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 2000, y: this.stage.height(), w: 270, h: 150, figure: "box", ui: true} ),
-            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 5000, y: this.stage.height(), w: 170, h: 350, figure: "box", ui: true} )
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1200, y: this.stage.height() -75, w: 270, h: 75, figure: "box", ui: false} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1900, y: this.stage.height() -250, w: 170, h: 250, figure: "box", ui: false} )
         );
 
 

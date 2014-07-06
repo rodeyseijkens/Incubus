@@ -46,6 +46,7 @@ GJ.Player = (function ()
 
         this.world = world;
         this.stage = stage;
+        this.lastPowerJump = new Date().getTime();
 
         // TODO Change this to a separate layer handler
         this.frontLayer2 =  layers[0];
@@ -138,6 +139,27 @@ GJ.Player = (function ()
                 v = -80;
             }
             this.player.ApplyImpulse( new b2Vec2( 0, v ), this.player.GetWorldCenter() );
+        }
+
+        if( KEYS[32] )
+        {
+            this.powerJump();
+        }
+    };
+
+    Player.prototype.powerJump = function() {
+
+        if(this.lastPowerJump == null) {
+            this.lastPowerJump = new Date().getTime();
+        }
+
+        if(this.jumping) {
+
+            var now = new Date().getTime();
+            if( (now - this.lastPowerJump) > 2000 ) {
+                this.player.ApplyImpulse( new b2Vec2( 0, -200 ), this.player.GetWorldCenter() );
+                this.lastPowerJump = new Date().getTime();
+            }
         }
     };
 
