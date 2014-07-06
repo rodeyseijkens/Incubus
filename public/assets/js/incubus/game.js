@@ -81,6 +81,11 @@ GJ.Game = (function ()
         }
 
         this.init();
+
+        $( 'body' ).on( 'touchstart', function ( event )
+        {
+            event.preventDefault();
+        } );
     };
 
     // Initialize (public)

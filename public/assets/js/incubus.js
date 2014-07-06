@@ -41,7 +41,9 @@ GJ.Core = (function ()
             this.init();
         }
 
-        this.__initTicker();
+        Hammer(element).on("tap", function(event) {
+            alert('hello!');
+        });
     };
 
     // Initialize (public)
@@ -60,16 +62,6 @@ GJ.Core = (function ()
         this.game = new GJ.Game( stage, layers );
         this.serverToClient();
         this.game.start();
-    };
-
-    Core.prototype.__initPhysicsEngine = function ()
-    {
-
-    };
-
-    Core.prototype.__initTicker = function ()
-    {
-
     };
 
     Core.prototype.serverToClient = function ()
@@ -127,4 +119,10 @@ GJ.Core = (function ()
 (function ()
 {
     var Core = GJ.Core.getInstance();
+
+    // Check if server or client
+    if ( typeof window == 'object' )
+    {
+        window.Core = Core;
+    }
 })();
