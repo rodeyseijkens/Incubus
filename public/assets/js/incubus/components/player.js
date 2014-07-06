@@ -221,7 +221,7 @@ GJ.Player = (function ()
 
         $("body").hammer().on( "doubletap", function ( event )
         {
-            alert('test');
+            alert('DOUBLE JUMP!!');
 
         } );
     };
@@ -245,22 +245,22 @@ GJ.Player = (function ()
         {
             if ( (stageStyle.e - -nxpos) >= 880 )
             {
-                this.stage.css( 'webkitTransform', 'matrix(1,0,0,1,' + (-nxpos + 880) + ',' + 0 + ')' );
+                this.stage.css( 'webkitTransform', 'translate(' + (-nxpos + 880) + 'px,' + 0 + 'px)' );
             }
         }
         else if ( this.direction == "left" )
         {
             if ( (stageStyle.e - -nxpos) <= 400 && (stageStyle.e <= -10) )
             {
-                this.stage.css( 'webkitTransform', 'matrix(1,0,0,1,' + (-nxpos + 400) + ',' + 0 + ')' );
+                this.stage.css( 'webkitTransform', 'translate(' + (-nxpos + 400) + 'px,' + 0 + 'px)' );
             }
         }
 
-        this.backLayer3.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e * 0.2) + ',' + 0 + ')' );
-        this.backLayer2.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e * 0.6) + ',' + 0 + ')' );
-        this.backLayer1.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e) + ',' + 0 + ')' );
-        this.frontLayer1.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e) + ',' + 0 + ')' );
-        this.frontLayer2.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e * 4) + ',' + 0 + ')' );
+        this.backLayer3.css( 'webkitTransform', 'translate(' + (stageStyle.e * 0.2) + 'px,' + 0 + 'px)' );
+        this.backLayer2.css( 'webkitTransform', 'translate(' + (stageStyle.e * 0.6) + 'px,' + 0 + 'px)' );
+        this.backLayer1.css( 'webkitTransform', 'translate(' + (stageStyle.e) + 'px,' + 0 + 'px)' );
+        this.frontLayer1.css( 'webkitTransform', 'translate(' + (stageStyle.e) + 'px,' + 0 + 'px)' );
+        this.frontLayer2.css( 'webkitTransform', 'translate(' + (stageStyle.e * 2) + 'px,' + 0 + 'px)' );
 
     };
 
@@ -280,26 +280,19 @@ GJ.Player = (function ()
 
 
         // TODO Change this to a separate layer handler
-        if ( (this.direction == "right") )
+        if ( (stageStyle.e - -nxpos) >= 880 )
         {
-            if ( (stageStyle.e - -nxpos) >= 880 )
-            {
-                this.stage.css( 'webkitTransform', 'matrix(1,0,0,1,' + (-nxpos + 880) + ',' + 0 + ')' );
-            }
-        }
-        else if ( this.direction == "left" )
-        {
-            if ( (stageStyle.e - -nxpos) <= 400 && (stageStyle.e <= -10) )
-            {
-                this.stage.css( 'webkitTransform', 'matrix(1,0,0,1,' + (-nxpos + 400) + ',' + 0 + ')' );
-            }
+            this.stage.css( 'webkitTransform', 'translate(' + (-nxpos + 880) + 'px,' + 0 + 'px)' );
         }
 
-        this.backLayer3.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e * 0.2) + ',' + 0 + ')' );
-        this.backLayer2.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e * 0.6) + ',' + 0 + ')' );
-        this.backLayer1.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e) + ',' + 0 + ')' );
-        this.frontLayer1.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e) + ',' + 0 + ')' );
-        this.frontLayer2.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e * 4) + ',' + 0 + ')' );
+        if ( (stageStyle.e - -nxpos) <= 400 && (stageStyle.e <= -10) )
+        {
+            this.stage.css( 'webkitTransform', 'translate(' + (-nxpos + 400) + 'px,' + 0 + 'px)' );
+        }
+
+        this.backLayer3.css( 'webkitTransform', 'translate(' + (stageStyle.e * 0.2) + 'px,' + 0 + 'px)' );
+        this.backLayer2.css( 'webkitTransform', 'translate(' + (stageStyle.e * 0.6) + 'px,' + 0 + 'px)' );
+        this.backLayer1.css( 'webkitTransform', 'translate(' + (stageStyle.e) + 'px,' + 0 + 'px)' );
 
     };
 

@@ -101,7 +101,7 @@ GJ.Game = (function ()
         this.stage.width( this.gWidth );
         this.stage.height( this.gHeight );
 
-        this.frontLayer2.width( this.gWidth * 4 );
+        this.frontLayer2.width( this.gWidth * 2 );
         this.frontLayer2.height( this.gHeight );
 
         this.frontLayer1.width( this.gWidth );

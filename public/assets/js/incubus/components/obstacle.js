@@ -127,8 +127,10 @@ GJ.Obstacle = (function ()
 
         var nxpos = (this.obstacle.GetWorldCenter().x * 30) - userdata.w;
         var nypos = (this.obstacle.GetWorldCenter().y * 30) - userdata.h;
-        var sin = Math.sin(this.obstacle.GetAngle()), cos = Math.cos(this.obstacle.GetAngle());
-        this.node.style.webkitTransform = 'matrix(' + cos + ',' + sin + ',' + -sin + ',' + cos + ',' + nxpos + ',' + nypos + ')';
+//        var sin = Math.sin(this.obstacle.GetAngle()), cos = Math.cos(this.obstacle.GetAngle());
+//        this.node.style.webkitTransform = 'matrix(' + cos + ',' + sin + ',' + -sin + ',' + cos + ',' + nxpos + ',' + nypos + ')';
+
+        $(this.node).css( 'transform', 'translate(' + nxpos + 'px,' + nypos + 'px) rotate('+this.obstacle.GetAngle()+'rad)');
 
     };
 
@@ -138,8 +140,9 @@ GJ.Obstacle = (function ()
 
         var nxpos = (mWorldCenter.x * 30) - userdata.w;
         var nypos = (mWorldCenter.y * 30) - userdata.h;
-        var sin = Math.sin(mAngle), cos = Math.cos(mAngle);
-        this.node.style.webkitTransform = 'matrix(' + cos + ',' + sin + ',' + -sin + ',' + cos + ',' + nxpos + ',' + nypos + ')';
+//        var sin = Math.sin(mAngle), cos = Math.cos(mAngle);
+//        this.node.style.webkitTransform = 'matrix(' + cos + ',' + sin + ',' + -sin + ',' + cos + ',' + nxpos + ',' + nypos + ')';
+        $(this.node).css( 'transform', 'translate(' + nxpos + 'px,' + nypos + 'px) rotate('+mAngle+'rad)');
 
     };
 
