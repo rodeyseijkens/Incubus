@@ -75,6 +75,8 @@ GJ.Game = (function ()
         this.scaleFactor = 30;
         this.entities = [];
 
+        this.leveldata = [];
+
         this.world = new b2World(new b2Vec2(0,20), true);
 
         this.debugDraw = new b2DebugDraw();
@@ -86,7 +88,12 @@ GJ.Game = (function ()
         this.world.SetDebugDraw(this.debugDraw);
 
         this._setWalls();
-        this.entities.push(new GJ.Player(this.world, this.stage, {}));
+        this.entities.push(
+            new GJ.Player(this.world, this.stage, {}),
+            new GJ.Obstacle(this.world, this.stage, {classname: "obstacle", type: "dynamic", x: 30, y: 30, w: 30, h: 30, figure: "box", ui: true}),
+            new GJ.Obstacle(this.world, this.stage, {classname: "obstacle", type: "static", x: 500, y: 330, w: 230, h: 30, figure: "box", ui: true})
+        );
+
 
     };
 

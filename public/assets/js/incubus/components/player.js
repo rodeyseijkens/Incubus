@@ -79,10 +79,6 @@ GJ.Player = (function ()
         var nypos = (ypos * 30) - (size * 30);
 
         this.node.style.webkitTransform = 'matrix(1,0,0,1,' + nxpos + ',' + nypos + ')';
-
-
-//        this.node.style.left = (xpos * 30) / 2+ "px";
-//        this.node.style.top = (ypos * 30) / 2+ "px";
         this.stage.append(this.node);
 
         return newBall;
@@ -119,7 +115,6 @@ GJ.Player = (function ()
         }
 
         if(KEYS[38]) {
-            console.log('top');
             this.player.ApplyImpulse(new b2Vec2(0, -5), this.player.GetWorldCenter());
         }
     };
