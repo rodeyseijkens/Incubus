@@ -222,7 +222,7 @@ GJ.Player = (function ()
         var nxpos = (this.player.GetWorldCenter().x * 30) - userdata.w;
         var nypos = (this.player.GetWorldCenter().y * 30) - userdata.h;
 
-        this.node.style.webkitTransform = 'matrix(1,0,0,1,' + nxpos + ',' + nypos + ')';
+        $(this.node).css( 'webkitTransform', 'translate(' + nxpos + 'px,' + nypos + 'px)' );
 
         var stageStyle = new WebKitCSSMatrix( window.getComputedStyle( this.stage[0] ).webkitTransform );
 

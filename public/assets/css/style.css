@@ -201,3 +201,23 @@ canvas {
     bottom: -1px;
     left: -201px;
 }
+
+.smallTreeB2 {
+    background: url(../img/desktop/FOR_b2_smalltree.png) no-repeat center center;
+    height: 720px;
+    width: 891px;
+    display: block;
+    position: absolute;
+    bottom: -1px;
+    left: 2050px;
+}
+
+.treeB2 {
+    background: url(../img/desktop/FOR_b2_tree.png) no-repeat center center;
+    height: 720px;
+    width: 1662px;
+    display: block;
+    position: absolute;
+    bottom: -1px;
+    left: 3050px;
+}
