@@ -136,9 +136,6 @@ GJ.Game = (function ()
             newWall.CreateFixture(wallFixture);
             walls.push(newWall);
         }
-
-
-        console.log(this.world);
     };
 
     Game.prototype.add = function() {

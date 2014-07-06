@@ -157,11 +157,23 @@ GJ.Player = (function ()
 
         this.node.style.webkitTransform = 'matrix(1,0,0,1,' + nxpos + ',' + nypos + ')';
 
-        var stageStyle = new WebKitCSSMatrix( window.getComputedStyle( this.stage[0] ).webkitTransform )
+        var stageStyle = new WebKitCSSMatrix( window.getComputedStyle( this.stage[0] ).webkitTransform );
 
-        if ( ((stageStyle.e - nxpos) <= -800) && (this.direction == "right") )
+
+
+        if ( (this.direction == "right") )
         {
-            this.stage.css( 'webkitTransform', 'matrix(1,0,0,1,' + (-nxpos + 800) + ',' + 0 + ')' );
+            if ( (stageStyle.e - -nxpos) >= 880 )
+            {
+                this.stage.css( 'webkitTransform', 'matrix(1,0,0,1,' + (-nxpos + 880) + ',' + 0 + ')' );
+            }
+        }
+        else if ( this.direction == "left" )
+        {
+            if ( (stageStyle.e - -nxpos) <= 400 && (stageStyle.e <= -10) )
+            {
+                this.stage.css( 'webkitTransform', 'matrix(1,0,0,1,' + (-nxpos + 400) + ',' + 0 + ')' );
+            }
         }
 
     };
