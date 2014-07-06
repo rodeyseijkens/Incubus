@@ -104,7 +104,19 @@ GJ.Game = (function ()
         this.scaleFactor = 30;
         this.entities = [];
 
-        this.leveldata = [];
+        this.leveldata = [
+            {
+                "player": {},
+                "obstacles": [
+
+                ]
+            },
+            {
+                "obstacles": [
+
+                ]
+            }
+        ];
 
         this.world = new b2World(new b2Vec2(0,50), true);
 
@@ -120,7 +132,8 @@ GJ.Game = (function ()
         this.entities.push(
             new GJ.Player(this.world, this.stage, this.layers, {}),
             new GJ.Obstacle(this.world, this.stage, {classname: "obstacle", type: "dynamic", x: 30, y: 30, w: 30, h: 30, figure: "box", ui: true}),
-            new GJ.Obstacle(this.world, this.stage, {classname: "obstacle", type: "static", x: 500, y: 330, w: 230, h: 30, figure: "box", ui: true})
+            new GJ.Obstacle(this.world, this.stage, {classname: "obstacle", type: "static", x: 2000, y: this.stage.height(), w: 270, h: 150, figure: "box", ui: true}),
+            new GJ.Obstacle(this.world, this.stage, {classname: "obstacle", type: "static", x: 5000, y: this.stage.height(), w: 170, h: 350, figure: "box", ui: true})
         );
 
 
@@ -128,27 +141,6 @@ GJ.Game = (function ()
 
     
     Game.prototype._setWalls = function() {
-
-        var numBalls = 3;
-        var balls = new Array();
-        for (var i=0; i < numBalls; i++) {
-            var ballDef = new b2BodyDef;
-            ballDef.type = b2Body.b2_dynamicBody;
-            var ypos = (10);
-            var xpos = ((i + 1) * 4);
-            var size = (30 / this.scaleFactor);
-            ballDef.position.Set(xpos, ypos);
-            var ballFixture = new b2FixtureDef;
-            ballFixture.density = 10;
-            ballFixture.friction = .2;
-            ballFixture.restitution = .5;
-            ballFixture.shape =  new b2PolygonShape(size);
-            ballFixture.shape.SetAsBox(size, size);
-            var newBall = this.world.CreateBody(ballDef)
-            newBall.CreateFixture(ballFixture);
-            balls.push(newBall);
-        }
-
 
         var wallDefs = [
             {x: (this.stage.width() / 2) / 30, y: 0, w: (this.stage.width() / 2) / 30, h: 0}, //top
