@@ -40,11 +40,19 @@ GJ.Player = (function ()
     var INSTANCE = null;
 
     // Constructor
-    var Player = function ( world, stage, settings )
+    var Player = function ( world, stage, layers, settings )
     {
 
         this.world = world;
         this.stage = stage;
+
+        // TODO Change this to a separate layer handler
+        this.frontLayer2 =  layers[0];
+        this.frontLayer1 =  layers[1];
+        this.backLayer1 =  layers[2];
+        this.backLayer2 =  layers[3];
+        this.backLayer3 =  layers[4];
+
         this.__classId = ((( 1 + Math.random()) * 0x10000) | 0) + new Date().getTime();
 
         this.settings = $.extend( SETTINGS, settings );
@@ -62,7 +70,7 @@ GJ.Player = (function ()
         ballDef.position.Set( xpos, ypos );
         var ballFixture = new b2FixtureDef;
         ballFixture.density = 3;
-        ballFixture.friction = 0.1;
+        ballFixture.friction = 0.3;
         ballFixture.restitution = 0;
         ballFixture.shape = new b2PolygonShape( size );
         ballFixture.shape.SetAsBox( size, size );
@@ -160,7 +168,7 @@ GJ.Player = (function ()
         var stageStyle = new WebKitCSSMatrix( window.getComputedStyle( this.stage[0] ).webkitTransform );
 
 
-
+        // TODO Change this to a separate layer handler
         if ( (this.direction == "right") )
         {
             if ( (stageStyle.e - -nxpos) >= 880 )
@@ -175,6 +183,12 @@ GJ.Player = (function ()
                 this.stage.css( 'webkitTransform', 'matrix(1,0,0,1,' + (-nxpos + 400) + ',' + 0 + ')' );
             }
         }
+
+        this.backLayer3.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e * 0.2) + ',' + 0 + ')' );
+        this.backLayer2.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e * 0.6) + ',' + 0 + ')' );
+        this.backLayer1.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e) + ',' + 0 + ')' );
+        this.frontLayer1.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e) + ',' + 0 + ')' );
+        this.frontLayer2.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e * 4) + ',' + 0 + ')' );
 
     };
 

@@ -25,7 +25,6 @@ canvas {
 }
 
 #stage {
-    background-color: grey;
     background-image: url(http://www.mcilhattons.com/wp-content/uploads/2011/12/test-background.jpg);
     position: absolute;
     top: 0;
@@ -35,9 +34,44 @@ canvas {
     z-index: 1;
 }
 
-#f1 {
+#b3 {
+    background-image: url(http://www.karishmacosmetic.com/wp-content/uploads/2012/08/background-968x1024.png);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -2;
+}
 
-    
+#b2 {
+    background-image: url(http://www.vcn.com/public/themes/normal/images/bgswirlstran.png);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+#b1 {
+    background-image: url(http://www.karishmacosmetic.com/wp-content/uploads/2012/08/background-968x1024.png);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+#f1 {
+    background-image: url(http://www.vcn.com/public/themes/normal/images/bgswirlstran.png);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+#f2 {
+    background-image: url(http://www.karishmacosmetic.com/wp-content/uploads/2012/08/background-968x1024.png);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
 }
 
 #canvas {

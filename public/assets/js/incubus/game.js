@@ -50,9 +50,18 @@ GJ.Game = (function ()
         b2Listener = Box2D.Dynamics.b2ContactListener;
 
     // Constructor
-    var Game = function(stage, settings)
+    var Game = function(stage, layers, settings)
     {
         this.stage = stage;
+        this.layers = layers;
+
+        // TODO Change this to a separate layer handler
+        this.frontLayer2 =  layers[0];
+        this.frontLayer1 =  layers[1];
+        this.backLayer1 =  layers[2];
+        this.backLayer2 =  layers[3];
+        this.backLayer3 =  layers[4];
+
         this.settings = $.extend(SETTINGS, settings);
 
         // Class ID
@@ -66,8 +75,27 @@ GJ.Game = (function ()
 
         //this.stage[0].width = window.innerWidth;
         //this.stage[0].height = window.innerHeight;
-        this.stage.width( 35000 );
-        this.stage.height( 700 );
+
+        this.gWidth = 50000;
+        this.gHeight = 700;
+
+        this.stage.width( this.gWidth );
+        this.stage.height( this.gHeight );
+
+        this.frontLayer2.width( this.gWidth * 4 );
+        this.frontLayer2.height( this.gHeight );
+
+        this.frontLayer1.width( this.gWidth );
+        this.frontLayer1.height( this.gHeight );
+
+        this.backLayer1.width( this.gWidth );
+        this.backLayer1.height( this.gHeight );
+
+        this.backLayer2.width( this.gWidth * 0.6 );
+        this.backLayer2.height( this.gHeight );
+
+        this.backLayer3.width( this.gWidth * 0.2 );
+        this.backLayer3.height( this.gHeight );
 
         this.scaleFactor = 30;
         this.entities = [];
@@ -87,7 +115,7 @@ GJ.Game = (function ()
 //        this.world.SetDebugDraw(this.debugDraw);
 
         this._setWalls();
-        this.entities.push(new GJ.Player(this.world, this.stage, {}));
+        this.entities.push(new GJ.Player(this.world, this.stage, this.layers, {}));
 
     };
 
