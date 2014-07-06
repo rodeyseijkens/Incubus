@@ -110,6 +110,9 @@ GJ.Player = (function ()
 
         if(KEYS[39]) {
 
+            if(this.wallHitRight) {
+                return;
+            }
 
             if ( this.player.GetLinearVelocity().x < 15 )
             {
@@ -121,6 +124,9 @@ GJ.Player = (function ()
 
         if ( KEYS[37] )
         {
+            if(this.wallHitLeft) {
+                return;
+            }
 
             if ( this.player.GetLinearVelocity().x > -15 )
             {
@@ -164,6 +170,8 @@ GJ.Player = (function ()
         var self = this;
 
         this.listener = new b2Listener;
+
+
         this.listener.BeginContact = function(contact) {
             var aBody = contact.GetFixtureA().GetBody(),
                 bBody = contact.GetFixtureB().GetBody();
@@ -172,11 +180,27 @@ GJ.Player = (function ()
                 return
             }
 
-            if(aBody.GetUserData().element == "ground" && bBody.GetUserData().element == "player") {
-                self.jumping = false;
-            } else if(aBody.GetUserData().element == "player" && bBody.GetUserData().element == "ground") {
+            if( (aBody.GetUserData().element == "ground" && bBody.GetUserData().element == "player") ||
+                (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "ground") ||
+                (aBody.GetUserData().element == "bridge" && bBody.GetUserData().element == "player") ||
+                (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "bridge"))
+            {
                 self.jumping = false;
             }
+
+            if( (aBody.GetUserData().element == "entity" && bBody.GetUserData().element == "player") || (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "entity")) {
+                if(bBody.GetUserData().type == "dynamic") {
+                    return;
+                }
+                if(aBody.GetWorldCenter().x < bBody.GetWorldCenter().x) {
+                    self.wallHitRight = true;
+                }
+                if(aBody.GetWorldCenter().x > bBody.GetWorldCenter().x) {
+                    self.wallHitLeft = true;
+                }
+
+            }
+
         };
         this.listener.EndContact = function(contact) {
             var aBody = contact.GetFixtureA().GetBody(),
@@ -186,10 +210,17 @@ GJ.Player = (function ()
                 return
             }
 
-            if(aBody.GetUserData().element == "ground" && bBody.GetUserData().element == "player") {
+            if( (aBody.GetUserData().element == "ground" && bBody.GetUserData().element == "player") ||
+                (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "ground") ||
+                (aBody.GetUserData().element == "bridge" && bBody.GetUserData().element == "player") ||
+                (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "bridge"))
+            {
                 self.jumping = true;
-            } else if(aBody.GetUserData().element == "player" && bBody.GetUserData().element == "ground") {
-                self.jumping = true;
+            }
+
+            if( (aBody.GetUserData().element == "entity" && bBody.GetUserData().element == "player") || (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "entity")) {
+                self.wallHitRight = false;
+                self.wallHitLeft = false;
             }
         };
 

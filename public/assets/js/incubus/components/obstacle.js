@@ -106,22 +106,8 @@ GJ.Obstacle = (function ()
     Obstacle.prototype.init = function ()
     {
         this.obstacle = this.create();
-        this.bind();
     };
 
-    Obstacle.prototype.bind = function()
-    {
-        document.addEventListener('keydown', function(e) {
-            e.preventDefault();
-            var key = e.which || e.keyCode;
-            KEYS[key] = true;
-        }, false);
-        document.addEventListener('keyup', function(e) {
-            e.preventDefault();
-            var key = e.which || e.keyCode;
-            KEYS[key] = false;
-        }, false);
-    };
 
     Obstacle.prototype.render = function()
     {

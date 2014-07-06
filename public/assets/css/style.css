@@ -94,7 +94,7 @@ canvas {
     left: 0;
 }
 
-.obstacle {
+.obstacle, .bridge, .holder {
     background-color: red;
     position: absolute;
     top: 0;

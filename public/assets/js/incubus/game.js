@@ -150,12 +150,21 @@ GJ.Game = (function ()
         this._setWalls();
         this.entities.push(
             new GJ.Player( this.world, this.stage, this.layers, {} ),
-//            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1200, y: this.stage.height() - 150, w: 270, h: 1, figure: "box", ui: false, element: "ground"} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "dynamic", x: 120, y: 30, w: 30, h: 30, figure: "box", ui: true} ),
+
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1200, y: this.stage.height() - 150, w: 270, h: 1, figure: "box", ui: false, element: "ground"} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1200, y: this.stage.height() - 75, w: 270, h: 75, figure: "box", ui: false, element: "entity"} ),
+
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1900, y: this.stage.height() - 300, w: 170, h: 1, figure: "box", ui: false, element: "ground"} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1900, y: this.stage.height() - 150, w: 170, h: 150, figure: "box", ui: false, element: "entity"} ),
+
+            new GJ.UI(this.world, this.stage, {obj: "bridge"}),
+
             new GJ.Obstacle( this.world, this.stage, {classname: "ground", type: "static", x: 0, y: this.stage.height() - 20, w: 10000, h: 10, figure: "box", ui: false, element: "ground"} ),
             new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "dynamic", x: 250, y: 50, w: 30, h: 30, figure: "box", ui: true} )
-//            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1900, y: this.stage.height() - 150, w: 170, h: 150, figure: "box", ui: false, element: "entity"} )
         );
     };
+
 
     Game.prototype._setWalls = function ()
     {
@@ -251,7 +260,9 @@ GJ.Game = (function ()
         }
 
         this.world.Step( 1 / 60, 10, 10 );
-//        this.world.DrawDebugData();
+        if(this.debug) {
+            this.world.DrawDebugData();
+        }
         this.world.ClearForces();
 //        console.log('render');
 
