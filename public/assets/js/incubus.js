@@ -59,7 +59,7 @@ GJ.Core = (function ()
 
     Core.prototype.serverToClient = function ()
     {
-        this.socket = io.connect( 'localhost', { port: 1337, transports: [ 'websocket' ] } );
+        this.socket = io.connect( '10.22.244.154', { port: 1337, transports: [ 'websocket' ] } );
 
         this.socket.on( 'connect', function ()
         {
