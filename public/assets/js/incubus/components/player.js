@@ -1,21 +1,21 @@
 /**
  * Incubus Game
  *
- * @date		04.07.2014
- * @version		0.1
- * @author		Maarten Oerlemans - Brainseden 2014
+ * @date        04.07.2014
+ * @version        0.1
+ * @author        Maarten Oerlemans - Brainseden 2014
  * @depend      jQuery.js
  */
 
 // Namespacing
-if (GJ == null || typeof(GJ) != 'object') {
+if ( GJ == null || typeof(GJ) != 'object' )
+{
     var GJ = {};
 }
 
 // Player class
 GJ.Player = (function ()
 {
-
     var SETTINGS = {};
 
     var SELECTORS = {
@@ -40,37 +40,37 @@ GJ.Player = (function ()
     var INSTANCE = null;
 
     // Constructor
-    var Player = function(world, stage, settings)
+    var Player = function ( world, stage, settings )
     {
 
         this.world = world;
         this.stage = stage;
         this.__classId = ((( 1 + Math.random()) * 0x10000) | 0) + new Date().getTime();
 
-        this.settings = $.extend(SETTINGS, settings);
+        this.settings = $.extend( SETTINGS, settings );
         this.init();
 
     };
 
-    Player.prototype.create = function()
+    Player.prototype.create = function ()
     {
         var ballDef = new b2BodyDef;
         ballDef.type = b2Body.b2_dynamicBody;
         var ypos = 2;
         var xpos = 2;
         var size = (30 / 30);
-        ballDef.position.Set(xpos, ypos);
+        ballDef.position.Set( xpos, ypos );
         var ballFixture = new b2FixtureDef;
-        ballFixture.density = 1.5;
-        ballFixture.friction = 1;
-        ballFixture.restitution = .5;
-        ballFixture.shape =  new b2PolygonShape(size);
-        ballFixture.shape.SetAsBox(size, size);
-        var newBall = this.world.CreateBody(ballDef);
-        newBall.CreateFixture(ballFixture);
-        newBall.SetUserData({w: size * 30, h: size * 30});
+        ballFixture.density = 3;
+        ballFixture.friction = 0.1;
+        ballFixture.restitution = 0;
+        ballFixture.shape = new b2PolygonShape( size );
+        ballFixture.shape.SetAsBox( size, size );
+        var newBall = this.world.CreateBody( ballDef );
+        newBall.CreateFixture( ballFixture );
+        newBall.SetUserData( {w: size * 30, h: size * 30} );
 
-        this.node = document.createElement('div');
+        this.node = document.createElement( 'div' );
         this.node.className = 'player';
         this.node.style.width = (size * 30) * 2 + "px";
         this.node.style.height = (size * 30) * 2 + "px";
@@ -83,7 +83,7 @@ GJ.Player = (function ()
 
 //        this.node.style.left = (xpos * 30) / 2+ "px";
 //        this.node.style.top = (ypos * 30) / 2+ "px";
-        this.stage.append(this.node);
+        this.stage.append( this.node );
 
         return newBall;
     };
@@ -92,61 +92,77 @@ GJ.Player = (function ()
     Player.prototype.init = function ()
     {
         this.player = this.create();
-        this.player.SetFixedRotation(true);
+        this.player.SetFixedRotation( true );
         this.bind();
     };
 
-    Player.prototype.move = function()
+    Player.prototype.move = function ()
     {
-        if(KEYS[39]) {
+        if ( KEYS[39] )
+        {
 
             var v = 0;
 
-            if(this.player.GetLinearVelocity().x < 5) {
-                v = 5;
+            if ( this.player.GetLinearVelocity().x < 15 )
+            {
+                v = 15;
             }
-            this.player.ApplyImpulse(new b2Vec2(v, 0), this.player.GetWorldCenter());
-
+            this.player.ApplyImpulse( new b2Vec2( v, 0 ), this.player.GetWorldCenter() );
+            this.direction = "right";
         }
 
-        if(KEYS[37]) {
+        if ( KEYS[37] )
+        {
             var v = 0;
 
-            if(this.player.GetLinearVelocity().x > -5) {
-                v = -5;
+            if ( this.player.GetLinearVelocity().x > -15 )
+            {
+                v = -15;
             }
-            this.player.ApplyImpulse(new b2Vec2(v, 0), this.player.GetWorldCenter());
+            this.player.ApplyImpulse( new b2Vec2( v, 0 ), this.player.GetWorldCenter() );
+
+            this.direction = "left";
         }
 
-        if(KEYS[38]) {
-            console.log('top');
-            this.player.ApplyImpulse(new b2Vec2(0, -5), this.player.GetWorldCenter());
+        if ( KEYS[38] )
+        {
+            this.player.ApplyImpulse( new b2Vec2( 0, -30 ), this.player.GetWorldCenter() );
         }
     };
 
-    Player.prototype.bind = function()
+    Player.prototype.bind = function ()
     {
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener( 'keydown', function ( e )
+        {
             e.preventDefault();
             var key = e.which || e.keyCode;
             KEYS[key] = true;
-        }, false);
-        document.addEventListener('keyup', function(e) {
+        }, false );
+        document.addEventListener( 'keyup', function ( e )
+        {
             e.preventDefault();
             var key = e.which || e.keyCode;
             KEYS[key] = false;
-        }, false);
+        }, false );
     };
 
-    Player.prototype.render = function()
+    Player.prototype.render = function ()
     {
         this.move();
         var userdata = this.player.GetUserData();
 
+        // TODO: SCALESIZE GET
         var nxpos = (this.player.GetWorldCenter().x * 30) - userdata.w;
         var nypos = (this.player.GetWorldCenter().y * 30) - userdata.h;
 
         this.node.style.webkitTransform = 'matrix(1,0,0,1,' + nxpos + ',' + nypos + ')';
+
+        var stageStyle = new WebKitCSSMatrix( window.getComputedStyle( this.stage[0] ).webkitTransform )
+
+        if ( ((stageStyle.e - nxpos) <= -800) && (this.direction == "right") )
+        {
+            this.stage.css( 'webkitTransform', 'matrix(1,0,0,1,' + (-nxpos + 800) + ',' + 0 + ')' );
+        }
 
     };
 

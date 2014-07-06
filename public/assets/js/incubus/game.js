@@ -66,24 +66,25 @@ GJ.Game = (function ()
 
         //this.stage[0].width = window.innerWidth;
         //this.stage[0].height = window.innerHeight;
-        this.stage.width( 800 );
+        this.stage.width( 35000 );
         this.stage.height( 700 );
 
-        this.canvas = $('#canvas');
-
-        this.ctx = this.canvas[0].getContext('2d');
         this.scaleFactor = 30;
         this.entities = [];
 
-        this.world = new b2World(new b2Vec2(0,20), true);
+        this.world = new b2World(new b2Vec2(0,50), true);
+//
+//        this.canvas = $('#canvas');
+//
+//        this.ctx = this.canvas[0].getContext('2d');
 
-        this.debugDraw = new b2DebugDraw();
-        this.debugDraw.SetSprite (this.ctx);
-        this.debugDraw.SetDrawScale(this.scaleFactor);     //define scale
-        this.debugDraw.SetFillAlpha(0.3);    //define transparency
-        this.debugDraw.SetLineThickness(1.0);
-        this.debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
-        this.world.SetDebugDraw(this.debugDraw);
+//        this.debugDraw = new b2DebugDraw();
+//        this.debugDraw.SetSprite (this.ctx);
+//        this.debugDraw.SetDrawScale(this.scaleFactor);     //define scale
+//        this.debugDraw.SetFillAlpha(0.3);    //define transparency
+//        this.debugDraw.SetLineThickness(1.0);
+//        this.debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
+//        this.world.SetDebugDraw(this.debugDraw);
 
         this._setWalls();
         this.entities.push(new GJ.Player(this.world, this.stage, {}));
@@ -128,8 +129,8 @@ GJ.Game = (function ()
             var newWall = this.world.CreateBody(wallDef);
             var wallFixture = new b2FixtureDef;
             wallFixture.density = 1;
-            wallFixture.friction = 0.2;
-            wallFixture.restitution = .5;
+            wallFixture.friction = 0.6;
+            wallFixture.restitution = 0;
             wallFixture.shape = new b2PolygonShape;
             wallFixture.shape.SetAsBox(wallDefs[j].w, wallDefs[j].h);
             newWall.CreateFixture(wallFixture);
