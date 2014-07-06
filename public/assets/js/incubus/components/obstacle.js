@@ -75,7 +75,7 @@ GJ.Obstacle = (function ()
         var obsFix = new b2FixtureDef;
         obsFix.density = 1.5;
         obsFix.friction = 1;
-        obsFix.restitution = .5;
+        obsFix.restitution = 0;
 
         obsFix.shape = (this.settings.figure == "box") ? new b2PolygonShape : new b2CircleShape(this.settings.w);
         if(this.settings.figure == "box") {
@@ -84,7 +84,7 @@ GJ.Obstacle = (function ()
 
         var newObs = this.world.CreateBody(obsDef);
         newObs.CreateFixture(obsFix);
-        newObs.SetUserData({w: this.scaleUp(w), h: this.scaleUp(h), ui: this.settings.ui});
+        newObs.SetUserData({element: "entity", w: this.scaleUp(w), h: this.scaleUp(h), ui: this.settings.ui, type: this.settings.type });
 
         this.node = document.createElement('div');
         this.node.className = this.settings.classname;

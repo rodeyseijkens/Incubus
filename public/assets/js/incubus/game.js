@@ -118,7 +118,7 @@ GJ.Game = (function ()
             }
         ];
 
-        this.world = new b2World(new b2Vec2(0,50), true);
+        this.world = new b2World(new b2Vec2(0,60), false);
 
         this.debugDraw = new b2DebugDraw();
         this.debugDraw.SetSprite (this.ctx);
@@ -150,6 +150,7 @@ GJ.Game = (function ()
         ];
         var walls = [];
         for (var j = 0; j < wallDefs.length; j++) {
+
             var wallDef = new b2BodyDef;
             wallDef.type = b2Body.b2_staticBody;
             wallDef.position.Set(wallDefs[j].x, wallDefs[j].y);
@@ -161,6 +162,9 @@ GJ.Game = (function ()
             wallFixture.shape = new b2PolygonShape;
             wallFixture.shape.SetAsBox(wallDefs[j].w, wallDefs[j].h);
             newWall.CreateFixture(wallFixture);
+            if(j == 1) {
+                newWall.SetUserData({element: "ground"});
+            }
             walls.push(newWall);
         }
     };

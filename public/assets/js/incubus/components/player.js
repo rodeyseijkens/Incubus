@@ -72,12 +72,12 @@ GJ.Player = (function ()
         var ballFixture = new b2FixtureDef;
         ballFixture.density = 1.5;
         ballFixture.friction = 1;
-        ballFixture.restitution = .5;
+        ballFixture.restitution = 0;
         ballFixture.shape =  new b2PolygonShape(size);
         ballFixture.shape.SetAsBox(size, size);
         var newBall = this.world.CreateBody(ballDef);
         newBall.CreateFixture(ballFixture);
-        newBall.SetUserData({w: size * 30, h: size * 30});
+        newBall.SetUserData({element: "player", w: size * 30, h: size * 30});
 
         this.node = document.createElement('div');
         this.node.className = 'player';
@@ -98,14 +98,17 @@ GJ.Player = (function ()
     {
         this.player = this.create();
         this.player.SetFixedRotation(true);
+        this.collision();
         this.bind();
     };
 
     Player.prototype.move = function()
     {
+
+        var v = 0;
+
         if(KEYS[39]) {
 
-            var v = 0;
 
             if ( this.player.GetLinearVelocity().x < 15 )
             {
@@ -117,7 +120,6 @@ GJ.Player = (function ()
 
         if ( KEYS[37] )
         {
-            var v = 0;
 
             if ( this.player.GetLinearVelocity().x > -15 )
             {
@@ -130,9 +132,53 @@ GJ.Player = (function ()
 
         if ( KEYS[38] )
         {
-            this.player.ApplyImpulse( new b2Vec2( 0, -30 ), this.player.GetWorldCenter() );
+            if(this.jumping) {
+                v = 0;
+            } else {
+                v = -80;
+            }
+            this.player.ApplyImpulse( new b2Vec2( 0, v ), this.player.GetWorldCenter() );
         }
     };
+
+    Player.prototype.collision = function()
+    {
+
+        var self = this;
+
+        this.listener = new b2Listener;
+        this.listener.BeginContact = function(contact) {
+            var aBody = contact.GetFixtureA().GetBody(),
+                bBody = contact.GetFixtureB().GetBody();
+
+            if(aBody.GetUserData() == null || bBody.GetUserData() == null) {
+                return
+            }
+
+            if(aBody.GetUserData().element == "ground" && bBody.GetUserData().element == "player") {
+                self.jumping = false;
+            } else if(aBody.GetUserData().element == "player" && bBody.GetUserData().element == "ground") {
+                self.jumping = false;
+            }
+        };
+        this.listener.EndContact = function(contact) {
+            var aBody = contact.GetFixtureA().GetBody(),
+                bBody = contact.GetFixtureB().GetBody();
+
+            if(aBody.GetUserData() == null || bBody.GetUserData() == null) {
+                return
+            }
+
+            if(aBody.GetUserData().element == "ground" && bBody.GetUserData().element == "player") {
+                self.jumping = true;
+            } else if(aBody.GetUserData().element == "player" && bBody.GetUserData().element == "ground") {
+                self.jumping = true;
+            }
+        };
+
+        this.world.SetContactListener(this.listener);
+    };
+
 
     Player.prototype.bind = function()
     {
