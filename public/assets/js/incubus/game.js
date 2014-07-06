@@ -1,14 +1,15 @@
 /**
  * Incubus Game
  *
- * @date		04.07.2014
- * @version		0.1
- * @author		Maarten Oerlemans - Brainseden 2014
+ * @date        04.07.2014
+ * @version        0.1
+ * @author        Maarten Oerlemans - Brainseden 2014
  * @depend      jQuery.js
  */
 
 // Namespacing
-if (GJ == null || typeof(GJ) != 'object') {
+if ( GJ == null || typeof(GJ) != 'object' )
+{
     var GJ = {};
 }
 
@@ -16,16 +17,19 @@ if (GJ == null || typeof(GJ) != 'object') {
 GJ.Game = (function ()
 {
     // Check if server or client
-    if(typeof window == 'object') {
-        window.requestAnimationFrame = ( function() {
+    if ( typeof window == 'object' )
+    {
+        window.requestAnimationFrame = (function ()
+        {
             return window.webkitRequestAnimationFrame ||
                 window.mozRequestAnimationFrame ||
                 window.oRequestAnimationFrame ||
                 window.msRequestAnimationFrame ||
-                function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
+                function ( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element )
+                {
                     window.setTimeout( callback, 1000 / 60 );
                 };
-        } )();
+        })();
     }
 
     var SETTINGS = {
@@ -50,22 +54,32 @@ GJ.Game = (function ()
         b2Listener = Box2D.Dynamics.b2ContactListener;
 
     // Constructor
-    var Game = function(stage, layers, settings)
+    var Game = function ( stage, layers, settings )
     {
         this.stage = stage;
         this.layers = layers;
 
         // TODO Change this to a separate layer handler
-        this.frontLayer2 =  layers[0];
-        this.frontLayer1 =  layers[1];
-        this.backLayer1 =  layers[2];
-        this.backLayer2 =  layers[3];
-        this.backLayer3 =  layers[4];
+        this.frontLayer2 = layers[0];
+        this.frontLayer1 = layers[1];
+        this.backLayer1 = layers[2];
+        this.backLayer2 = layers[3];
+        this.backLayer3 = layers[4];
 
-        this.settings = $.extend(SETTINGS, settings);
+        this.settings = $.extend( SETTINGS, settings );
 
         // Class ID
         this.__classId = ((( 1 + Math.random()) * 0x10000) | 0) + new Date().getTime();
+
+        if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test( navigator.userAgent ) )
+        {
+            this.isMobile = true;
+        }
+        else
+        {
+            this.isMobile = false;
+        }
+
         this.init();
     };
 
@@ -97,10 +111,10 @@ GJ.Game = (function ()
         this.backLayer3.width( this.gWidth * 0.2 );
         this.backLayer3.height( this.gHeight );
 
-        this.canvas = $('#canvas');
+        this.canvas = $( '#canvas' );
 
-        this.ctx = this.canvas[0].getContext('2d');
-        
+        this.ctx = this.canvas[0].getContext( '2d' );
+
         this.scaleFactor = 30;
         this.entities = [];
 
@@ -120,41 +134,43 @@ GJ.Game = (function ()
 
         this.world = new b2World(new b2Vec2(0,60), false);
 
-        this.debugDraw = new b2DebugDraw();
-        this.debugDraw.SetSprite (this.ctx);
-        this.debugDraw.SetDrawScale(this.scaleFactor);     //define scale
-        this.debugDraw.SetFillAlpha(0.3);    //define transparency
-        this.debugDraw.SetLineThickness(1.0);
-        this.debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
-        this.world.SetDebugDraw(this.debugDraw);
+//        this.debugDraw = new b2DebugDraw();
+//        this.debugDraw.SetSprite( this.ctx );
+//        this.debugDraw.SetDrawScale( this.scaleFactor );     //define scale
+//        this.debugDraw.SetFillAlpha( 0.3 );    //define transparency
+//        this.debugDraw.SetLineThickness( 1.0 );
+//        this.debugDraw.SetFlags( b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit );
+//        this.world.SetDebugDraw( this.debugDraw );
 
         this._setWalls();
         this.entities.push(
-            new GJ.Player(this.world, this.stage, this.layers, {}),
-            new GJ.Obstacle(this.world, this.stage, {classname: "obstacle", type: "dynamic", x: 30, y: 30, w: 30, h: 30, figure: "box", ui: true}),
-            new GJ.Obstacle(this.world, this.stage, {classname: "obstacle", type: "static", x: 2000, y: this.stage.height(), w: 270, h: 150, figure: "box", ui: true}),
-            new GJ.Obstacle(this.world, this.stage, {classname: "obstacle", type: "static", x: 5000, y: this.stage.height(), w: 170, h: 350, figure: "box", ui: true})
+            new GJ.Player( this.world, this.stage, this.layers, {} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "dynamic", x: 30, y: 30, w: 30, h: 30, figure: "box", ui: true} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 2000, y: this.stage.height(), w: 270, h: 150, figure: "box", ui: true} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 5000, y: this.stage.height(), w: 170, h: 350, figure: "box", ui: true} )
         );
 
 
     };
 
-    
-    Game.prototype._setWalls = function() {
+
+    Game.prototype._setWalls = function ()
+    {
 
         var wallDefs = [
             {x: (this.stage.width() / 2) / 30, y: 0, w: (this.stage.width() / 2) / 30, h: 0}, //top
-            {x: (this.stage.width() / 2) / 30, y: (this.stage.height() / 30),w: (this.stage.width() / 2) / 30 ,h: 0},   //bottom
-            {x: 0, y: (this.stage.height() / 2) / 30, w: 0 , h: (this.stage.height() / 2) / 30},      //left
-            {x: (this.stage.width() / 30), y: (this.stage.height() / 2) / 30, w: 0 , h: (this.stage.height() / 2) / 30}      //left
+            {x: (this.stage.width() / 2) / 30, y: (this.stage.height() / 30), w: (this.stage.width() / 2) / 30, h: 0},   //bottom
+            {x: 0, y: (this.stage.height() / 2) / 30, w: 0, h: (this.stage.height() / 2) / 30},      //left
+            {x: (this.stage.width() / 30), y: (this.stage.height() / 2) / 30, w: 0, h: (this.stage.height() / 2) / 30}      //left
         ];
         var walls = [];
-        for (var j = 0; j < wallDefs.length; j++) {
 
+        for ( var j = 0; j < wallDefs.length; j++ )
+        {
             var wallDef = new b2BodyDef;
             wallDef.type = b2Body.b2_staticBody;
-            wallDef.position.Set(wallDefs[j].x, wallDefs[j].y);
-            var newWall = this.world.CreateBody(wallDef);
+            wallDef.position.Set( wallDefs[j].x, wallDefs[j].y );
+            var newWall = this.world.CreateBody( wallDef );
             var wallFixture = new b2FixtureDef;
             wallFixture.density = 1;
             wallFixture.friction = 0.6;
@@ -169,43 +185,74 @@ GJ.Game = (function ()
         }
     };
 
-    Game.prototype.add = function() {
+    Game.prototype.add = function ()
+    {
 
     };
 
-    Game.prototype.render = function() {
+    Game.prototype.setClientID = function ( id )
+    {
+        this.clientID = id;
+    };
+
+    Game.prototype.serverEnities = function ( list )
+    {
+        this.entityList = list;
+
+        for ( var i = 0, l = list.length; i < l; i++ )
+        {
+            this.entities[i].render();
+        }
+    };
+
+    Game.prototype.render = function ()
+    {
 
 
         // Check if server or client
-        if(typeof window == 'object') {
-            requestAnimationFrame(this.render.bind(this));
-        } else {
-            setInterval(this.render.bind(this), 1000 / 60);
+        if ( typeof window == 'object' )
+        {
+            requestAnimationFrame( this.render.bind( this ) );
+
+            if ( this.isMobile )
+            {
+                this.entities = this.entityList;
+            } else {
+
+            }
+        }
+        else
+        {
+            setInterval( this.render.bind( this ), 1000 / 60 );
         }
 
-        for (var i = 0, l = this.entities.length; i < l; i++) {
+        for ( var i = 0, l = this.entities.length; i < l; i++ )
+        {
             this.entities[i].render();
         }
 
-        this.world.Step(1 / 60, 10, 10);
-        this.world.DrawDebugData();
+        this.world.Step( 1 / 60, 10, 10 );
+//        this.world.DrawDebugData();
         this.world.ClearForces();
 
 //        console.log('render');
 
     };
 
-    Game.prototype.start = function() {
+    Game.prototype.start = function ()
+    {
         this.render();
     };
 
 
-    Game.prototype.stop = function() {
+    Game.prototype.stop = function ()
+    {
 
     };
 
 
-    Game.prototype.pause = function() {
+    Game.prototype.pause = function ()
+    {
 
     };
 

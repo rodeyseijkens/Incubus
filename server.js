@@ -58,9 +58,10 @@ function onSocketConnection( client )
 
     client.emit('message', {"startId": clients.length} );
 
-    client.on( 'message', function ( data )
+    client.on( 'entityRenderClient', function ( data )
     {
         // SEND DATA TO CLIENT
+
     } );
 
     client.on( 'disconnect', function ()

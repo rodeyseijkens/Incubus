@@ -73,7 +73,9 @@ GJ.Core = (function ()
 
     Core.prototype.serverToClient = function ()
     {
-        this.socket = io.connect( '10.22.244.154', { port: 1337, transports: [ 'websocket' ] } );
+        var self = this;
+
+        this.socket = io.connect( '10.22.244.12', { port: 1337, transports: [ 'websocket' ] } );
 
         this.socket.on( 'connect', function ()
         {
@@ -83,8 +85,18 @@ GJ.Core = (function ()
 
         this.socket.on( 'message', function ( data )
         {
-
             // GET DATA FROM SERVER
+
+            if (data.hasOwnProperty("startId")) {
+                self.game.setClientID( data.startId );
+            }
+
+//            if (data.hasOwnProperty())
+
+//            if (data.hasOwnProperty('bodyId')) {
+//                this.game.updateJoints(data);
+//                return;
+//            }
 
         } );
 
