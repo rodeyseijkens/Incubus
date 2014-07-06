@@ -194,6 +194,14 @@ GJ.Player = (function ()
             var key = e.which || e.keyCode;
             KEYS[key] = false;
         }, false );
+
+
+
+        $("body").hammer().on( "doubletap", function ( event )
+        {
+            alert('test');
+
+        } );
     };
 
     Player.prototype.render = function ()

@@ -40,10 +40,6 @@ GJ.Core = (function ()
         {
             this.init();
         }
-
-        Hammer(element).on("tap", function(event) {
-            alert('hello!');
-        });
     };
 
     // Initialize (public)
@@ -90,7 +86,7 @@ GJ.Core = (function ()
 
         this.socket.on( 'clientEntitiesSend', function ( data )
         {
-            self.game.serverEnities(data.enityList);
+            self.game.serverEnities( data.enityList );
         } );
 
         this.socket.on( 'disconnect', function ()
