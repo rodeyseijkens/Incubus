@@ -91,7 +91,7 @@ GJ.Game = (function ()
         //this.stage[0].height = window.innerHeight;
 
         this.gWidth = 50000;
-        this.gHeight = 700;
+        this.gHeight = 720;
 
         this.stage.width( this.gWidth );
         this.stage.height( this.gHeight );
