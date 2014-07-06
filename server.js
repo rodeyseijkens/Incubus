@@ -6,19 +6,12 @@ var util = require( 'util' );
 
 var socket;
 var clients = [];
+var serverEnities = [];
 
 var Box2D = require( './public/assets/js/libs/box2d.js' );
 eval( fs.readFileSync( './public/assets/js/incubus/components/player.js' ) + '' );
 eval( fs.readFileSync( './public/assets/js/incubus/game.js' ) + '' );
 eval( fs.readFileSync( './public/assets/js/incubus.js' ) + '' );
-
-function jointsToClients( data )
-{
-    for ( var i = 0; i < clients.length; i++ )
-    {
-        clients[i].emit('message', data );
-    }
-}
 
 function init()
 {
@@ -56,18 +49,23 @@ function onSocketConnection( client )
     clients.push( client );
     console.log( "Total clients: " + clients.length );
 
-    client.emit('message', {"startId": clients.length} );
+    client.emit( 'message', {"startId": clients.length} );
 
-    client.on( 'entityRenderClient', function ( data )
+    client.on( 'serverEntitiesSend', function ( data )
     {
         // SEND DATA TO CLIENT
+
+        for ( var i = 0; i < clients.length; i++ )
+        {
+            clients[i].emit( 'clientEntitiesSend', data );
+        }
 
     } );
 
     client.on( 'disconnect', function ()
     {
-        var index = clients.indexOf(client);
-        clients.splice(index, 1);
+        var index = clients.indexOf( client );
+        clients.splice( index, 1 );
 
         console.log( "disconnect" );
     } );

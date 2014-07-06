@@ -111,9 +111,9 @@ GJ.Game = (function ()
         this.backLayer3.width( this.gWidth * 0.2 );
         this.backLayer3.height( this.gHeight );
 
-        this.canvas = $( '#canvas' );
-
-        this.ctx = this.canvas[0].getContext( '2d' );
+//        this.canvas = $( '#canvas' );
+//
+//        this.ctx = this.canvas[0].getContext( '2d' );
 
         this.scaleFactor = 30;
         this.entities = [];
@@ -132,7 +132,7 @@ GJ.Game = (function ()
             }
         ];
 
-        this.world = new b2World(new b2Vec2(0,60), false);
+        this.world = new b2World( new b2Vec2( 0, 60 ), false );
 
 //        this.debugDraw = new b2DebugDraw();
 //        this.debugDraw.SetSprite( this.ctx );
@@ -176,12 +176,13 @@ GJ.Game = (function ()
             wallFixture.friction = 0.6;
             wallFixture.restitution = 0;
             wallFixture.shape = new b2PolygonShape;
-            wallFixture.shape.SetAsBox(wallDefs[j].w, wallDefs[j].h);
-            newWall.CreateFixture(wallFixture);
-            if(j == 1) {
-                newWall.SetUserData({element: "ground"});
+            wallFixture.shape.SetAsBox( wallDefs[j].w, wallDefs[j].h );
+            newWall.CreateFixture( wallFixture );
+            if ( j == 1 )
+            {
+                newWall.SetUserData( {element: "ground"} );
             }
-            walls.push(newWall);
+            walls.push( newWall );
         }
     };
 
@@ -195,14 +196,14 @@ GJ.Game = (function ()
         this.clientID = id;
     };
 
+    Game.prototype.setSocket = function ( socket )
+    {
+        this.socket = socket;
+    };
+
     Game.prototype.serverEnities = function ( list )
     {
-        this.entityList = list;
-
-        for ( var i = 0, l = list.length; i < l; i++ )
-        {
-            this.entities[i].render();
-        }
+        this.entityServerList = list;
     };
 
     Game.prototype.render = function ()
@@ -213,22 +214,47 @@ GJ.Game = (function ()
         if ( typeof window == 'object' )
         {
             requestAnimationFrame( this.render.bind( this ) );
-
-            if ( this.isMobile )
-            {
-                this.entities = this.entityList;
-            } else {
-
-            }
         }
         else
         {
             setInterval( this.render.bind( this ), 1000 / 60 );
         }
 
-        for ( var i = 0, l = this.entities.length; i < l; i++ )
+
+        if ( this.isMobile )
         {
-            this.entities[i].render();
+
+            for ( var i = 0, l = this.entityServerList.length; i < l; i++ )
+            {
+                var mAngle = this.entityServerList[i].angle;
+                var mCenter = this.entityServerList[i].center;
+
+//                console.log(this.entityServerList[i].angle);
+
+                this.entities[i].mobileRender( mCenter, mAngle );
+            }
+        }
+        else
+        {
+            var newEnitiylist = [];
+
+            for ( var i = 0, l = this.entities.length; i < l; i++ )
+            {
+                this.entities[i].render();
+
+                if ( this.entities[i].obstacle )
+                {
+
+                    newEnitiylist.push( {eID: i, angle: this.entities[i].obstacle.GetAngle(), center: this.entities[i].obstacle.GetWorldCenter() } );
+                }
+                else if ( this.entities[i].player )
+                {
+
+                    newEnitiylist.push( {eID: i, angle: this.entities[i].player.GetAngle(), center: this.entities[i].player.GetWorldCenter() } );
+                }
+            }
+
+            this.socket.emit( 'serverEntitiesSend', {id: this.clientID, enityList: newEnitiylist} );
         }
 
         this.world.Step( 1 / 60, 10, 10 );

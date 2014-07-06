@@ -132,6 +132,17 @@ GJ.Obstacle = (function ()
 
     };
 
+    Obstacle.prototype.mobileRender = function(mWorldCenter, mAngle)
+    {
+        var userdata = this.obstacle.GetUserData();
+
+        var nxpos = (mWorldCenter.x * 30) - userdata.w;
+        var nypos = (mWorldCenter.y * 30) - userdata.h;
+        var sin = Math.sin(mAngle), cos = Math.cos(mAngle);
+        this.node.style.webkitTransform = 'matrix(' + cos + ',' + sin + ',' + -sin + ',' + cos + ',' + nxpos + ',' + nypos + ')';
+
+    };
+
     // Force singleton (public)
     return Obstacle;
 

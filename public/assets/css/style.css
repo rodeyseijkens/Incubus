@@ -24,6 +24,14 @@ canvas {
     overflow: hidden;
 }
 
+#camera-mob {
+    display: block;
+    position: relative;
+    width: 1280px;
+    height: 720px;
+    overflow: scroll;
+}
+
 #stage {
     background-image: url(http://www.mcilhattons.com/wp-content/uploads/2011/12/test-background.jpg);
     position: absolute;

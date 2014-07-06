@@ -36,7 +36,8 @@ GJ.Core = (function ()
         this.__classId = ((( 1 + Math.random()) * 0x10000) | 0) + new Date().getTime();
 
         // Check if server or client
-        if(typeof window == 'object') {
+        if ( typeof window == 'object' )
+        {
             this.init();
         }
 
@@ -57,8 +58,8 @@ GJ.Core = (function ()
 
 
         this.game = new GJ.Game( stage, layers );
-        this.game.start();
         this.serverToClient();
+        this.game.start();
     };
 
     Core.prototype.__initPhysicsEngine = function ()
@@ -75,7 +76,8 @@ GJ.Core = (function ()
     {
         var self = this;
 
-        this.socket = io.connect( '10.22.244.12', { port: 1337, transports: [ 'websocket' ] } );
+        this.socket = io.connect( '10.22.244.153', { port: 1337, transports: [ 'websocket' ] } );
+        this.game.setSocket( this.socket );
 
         this.socket.on( 'connect', function ()
         {
@@ -87,17 +89,16 @@ GJ.Core = (function ()
         {
             // GET DATA FROM SERVER
 
-            if (data.hasOwnProperty("startId")) {
+            if ( data.hasOwnProperty( "startId" ) )
+            {
                 self.game.setClientID( data.startId );
             }
 
-//            if (data.hasOwnProperty())
+        } );
 
-//            if (data.hasOwnProperty('bodyId')) {
-//                this.game.updateJoints(data);
-//                return;
-//            }
-
+        this.socket.on( 'clientEntitiesSend', function ( data )
+        {
+            self.game.serverEnities(data.enityList);
         } );
 
         this.socket.on( 'disconnect', function ()

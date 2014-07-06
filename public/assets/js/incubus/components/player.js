@@ -234,6 +234,45 @@ GJ.Player = (function ()
 
     };
 
+
+    Player.prototype.mobileRender = function(mWorldCenter, mAngle)
+    {
+        this.move();
+        var userdata = this.player.GetUserData();
+
+        // TODO: SCALESIZE GET
+        var nxpos = (mWorldCenter.x * 30) - userdata.w;
+        var nypos = (mWorldCenter.y * 30) - userdata.h;
+
+        this.node.style.webkitTransform = 'matrix(1,0,0,1,' + nxpos + ',' + nypos + ')';
+
+        var stageStyle = new WebKitCSSMatrix( window.getComputedStyle( this.stage[0] ).webkitTransform );
+
+
+        // TODO Change this to a separate layer handler
+        if ( (this.direction == "right") )
+        {
+            if ( (stageStyle.e - -nxpos) >= 880 )
+            {
+                this.stage.css( 'webkitTransform', 'matrix(1,0,0,1,' + (-nxpos + 880) + ',' + 0 + ')' );
+            }
+        }
+        else if ( this.direction == "left" )
+        {
+            if ( (stageStyle.e - -nxpos) <= 400 && (stageStyle.e <= -10) )
+            {
+                this.stage.css( 'webkitTransform', 'matrix(1,0,0,1,' + (-nxpos + 400) + ',' + 0 + ')' );
+            }
+        }
+
+        this.backLayer3.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e * 0.2) + ',' + 0 + ')' );
+        this.backLayer2.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e * 0.6) + ',' + 0 + ')' );
+        this.backLayer1.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e) + ',' + 0 + ')' );
+        this.frontLayer1.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e) + ',' + 0 + ')' );
+        this.frontLayer2.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e * 4) + ',' + 0 + ')' );
+
+    };
+
     // Force singleton (public)
     return Player;
 
