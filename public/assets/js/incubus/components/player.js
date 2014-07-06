@@ -8,7 +8,8 @@
  */
 
 // Namespacing
-if (GJ == null || typeof(GJ) != 'object') {
+if ( GJ == null || typeof(GJ) != 'object' )
+{
     var GJ = {};
 }
 
@@ -40,19 +41,27 @@ GJ.Player = (function ()
     var INSTANCE = null;
 
     // Constructor
-    var Player = function(world, stage, settings)
+    var Player = function ( world, stage, layers, settings )
     {
 
         this.world = world;
         this.stage = stage;
+
+        // TODO Change this to a separate layer handler
+        this.frontLayer2 =  layers[0];
+        this.frontLayer1 =  layers[1];
+        this.backLayer1 =  layers[2];
+        this.backLayer2 =  layers[3];
+        this.backLayer3 =  layers[4];
+
         this.__classId = ((( 1 + Math.random()) * 0x10000) | 0) + new Date().getTime();
 
-        this.settings = $.extend(SETTINGS, settings);
+        this.settings = $.extend( SETTINGS, settings );
         this.init();
 
     };
 
-    Player.prototype.create = function()
+    Player.prototype.create = function ()
     {
         var ballDef = new b2BodyDef;
         ballDef.type = b2Body.b2_dynamicBody;
@@ -98,50 +107,84 @@ GJ.Player = (function ()
 
             var v = 0;
 
-            if(this.player.GetLinearVelocity().x < 5) {
-                v = 5;
+            if ( this.player.GetLinearVelocity().x < 15 )
+            {
+                v = 15;
             }
-            this.player.ApplyImpulse(new b2Vec2(v, 0), this.player.GetWorldCenter());
-
+            this.player.ApplyImpulse( new b2Vec2( v, 0 ), this.player.GetWorldCenter() );
+            this.direction = "right";
         }
 
-        if(KEYS[37]) {
+        if ( KEYS[37] )
+        {
             var v = 0;
 
-            if(this.player.GetLinearVelocity().x > -5) {
-                v = -5;
+            if ( this.player.GetLinearVelocity().x > -15 )
+            {
+                v = -15;
             }
-            this.player.ApplyImpulse(new b2Vec2(v, 0), this.player.GetWorldCenter());
+            this.player.ApplyImpulse( new b2Vec2( v, 0 ), this.player.GetWorldCenter() );
+
+            this.direction = "left";
         }
 
-        if(KEYS[38]) {
-            this.player.ApplyImpulse(new b2Vec2(0, -5), this.player.GetWorldCenter());
+        if ( KEYS[38] )
+        {
+            this.player.ApplyImpulse( new b2Vec2( 0, -30 ), this.player.GetWorldCenter() );
         }
     };
 
     Player.prototype.bind = function()
     {
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener( 'keydown', function ( e )
+        {
             e.preventDefault();
             var key = e.which || e.keyCode;
             KEYS[key] = true;
-        }, false);
-        document.addEventListener('keyup', function(e) {
+        }, false );
+        document.addEventListener( 'keyup', function ( e )
+        {
             e.preventDefault();
             var key = e.which || e.keyCode;
             KEYS[key] = false;
-        }, false);
+        }, false );
     };
 
-    Player.prototype.render = function()
+    Player.prototype.render = function ()
     {
         this.move();
         var userdata = this.player.GetUserData();
 
+        // TODO: SCALESIZE GET
         var nxpos = (this.player.GetWorldCenter().x * 30) - userdata.w;
         var nypos = (this.player.GetWorldCenter().y * 30) - userdata.h;
 
         this.node.style.webkitTransform = 'matrix(1,0,0,1,' + nxpos + ',' + nypos + ')';
+
+        var stageStyle = new WebKitCSSMatrix( window.getComputedStyle( this.stage[0] ).webkitTransform );
+
+
+        // TODO Change this to a separate layer handler
+        if ( (this.direction == "right") )
+        {
+            if ( (stageStyle.e - -nxpos) >= 880 )
+            {
+                this.stage.css( 'webkitTransform', 'matrix(1,0,0,1,' + (-nxpos + 880) + ',' + 0 + ')' );
+            }
+        }
+        else if ( this.direction == "left" )
+        {
+            if ( (stageStyle.e - -nxpos) <= 400 && (stageStyle.e <= -10) )
+            {
+                this.stage.css( 'webkitTransform', 'matrix(1,0,0,1,' + (-nxpos + 400) + ',' + 0 + ')' );
+            }
+        }
+
+        this.backLayer3.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e * 0.2) + ',' + 0 + ')' );
+        this.backLayer2.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e * 0.6) + ',' + 0 + ')' );
+        this.backLayer1.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e) + ',' + 0 + ')' );
+        this.frontLayer1.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e) + ',' + 0 + ')' );
+        this.frontLayer2.css( 'webkitTransform', 'matrix(1,0,0,1,' + (stageStyle.e * 4) + ',' + 0 + ')' );
 
     };
 

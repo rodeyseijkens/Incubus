@@ -12,14 +12,6 @@ eval( fs.readFileSync( './public/assets/js/incubus/components/player.js' ) + '' 
 eval( fs.readFileSync( './public/assets/js/incubus/game.js' ) + '' );
 eval( fs.readFileSync( './public/assets/js/incubus.js' ) + '' );
 
-//function update()
-//{
-//    world.Step( 1 / 60, 10, 10 );
-//    world.ClearForces();
-//}
-//
-//setInterval( update, 1000 / 60 );
-
 function jointsToClients( data )
 {
     for ( var i = 0; i < clients.length; i++ )
@@ -27,9 +19,6 @@ function jointsToClients( data )
         clients[i].emit('message', data );
     }
 }
-
-//setupWorld();
-
 
 function init()
 {
@@ -52,7 +41,6 @@ function init()
     setEventHandlers();
 };
 
-
 /**************************************************
  ** GAME EVENT HANDLERS
  **************************************************/
@@ -61,7 +49,6 @@ var setEventHandlers = function ()
     // Socket.IO
     socket.sockets.on( 'connection', onSocketConnection );
 };
-
 
 // New socket connection
 function onSocketConnection( client )
@@ -84,7 +71,6 @@ function onSocketConnection( client )
         console.log( "disconnect" );
     } );
 };
-
 
 // INIT SERVER
 init();

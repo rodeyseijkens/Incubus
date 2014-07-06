@@ -50,9 +50,18 @@ GJ.Game = (function ()
         b2Listener = Box2D.Dynamics.b2ContactListener;
 
     // Constructor
-    var Game = function(stage, settings)
+    var Game = function(stage, layers, settings)
     {
         this.stage = stage;
+        this.layers = layers;
+
+        // TODO Change this to a separate layer handler
+        this.frontLayer2 =  layers[0];
+        this.frontLayer1 =  layers[1];
+        this.backLayer1 =  layers[2];
+        this.backLayer2 =  layers[3];
+        this.backLayer3 =  layers[4];
+
         this.settings = $.extend(SETTINGS, settings);
 
         // Class ID
@@ -66,18 +75,38 @@ GJ.Game = (function ()
 
         //this.stage[0].width = window.innerWidth;
         //this.stage[0].height = window.innerHeight;
-        this.stage.width( 800 );
-        this.stage.height( 700 );
+
+        this.gWidth = 50000;
+        this.gHeight = 700;
+
+        this.stage.width( this.gWidth );
+        this.stage.height( this.gHeight );
+
+        this.frontLayer2.width( this.gWidth * 4 );
+        this.frontLayer2.height( this.gHeight );
+
+        this.frontLayer1.width( this.gWidth );
+        this.frontLayer1.height( this.gHeight );
+
+        this.backLayer1.width( this.gWidth );
+        this.backLayer1.height( this.gHeight );
+
+        this.backLayer2.width( this.gWidth * 0.6 );
+        this.backLayer2.height( this.gHeight );
+
+        this.backLayer3.width( this.gWidth * 0.2 );
+        this.backLayer3.height( this.gHeight );
 
         this.canvas = $('#canvas');
 
         this.ctx = this.canvas[0].getContext('2d');
+        
         this.scaleFactor = 30;
         this.entities = [];
 
         this.leveldata = [];
 
-        this.world = new b2World(new b2Vec2(0,20), true);
+        this.world = new b2World(new b2Vec2(0,50), true);
 
         this.debugDraw = new b2DebugDraw();
         this.debugDraw.SetSprite (this.ctx);
@@ -89,7 +118,7 @@ GJ.Game = (function ()
 
         this._setWalls();
         this.entities.push(
-            new GJ.Player(this.world, this.stage, {}),
+            new GJ.Player(this.world, this.stage, this.layers, {}),
             new GJ.Obstacle(this.world, this.stage, {classname: "obstacle", type: "dynamic", x: 30, y: 30, w: 30, h: 30, figure: "box", ui: true}),
             new GJ.Obstacle(this.world, this.stage, {classname: "obstacle", type: "static", x: 500, y: 330, w: 230, h: 30, figure: "box", ui: true})
         );
@@ -135,16 +164,13 @@ GJ.Game = (function ()
             var newWall = this.world.CreateBody(wallDef);
             var wallFixture = new b2FixtureDef;
             wallFixture.density = 1;
-            wallFixture.friction = 0.2;
-            wallFixture.restitution = .5;
+            wallFixture.friction = 0.6;
+            wallFixture.restitution = 0;
             wallFixture.shape = new b2PolygonShape;
             wallFixture.shape.SetAsBox(wallDefs[j].w, wallDefs[j].h);
             newWall.CreateFixture(wallFixture);
             walls.push(newWall);
         }
-
-
-        console.log(this.world);
     };
 
     Game.prototype.add = function() {

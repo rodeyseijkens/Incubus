@@ -19,7 +19,12 @@ GJ.Core = (function ()
     var SETTINGS = {};
 
     var SELECTORS = {
-        'stage': '#stage'
+        'stage': '#stage',
+        'frontLayer2': '#f2',
+        'frontLayer1': '#f1',
+        'backLayer1': '#b1',
+        'backLayer2': '#b2',
+        'backLayer3': '#b3'
     };
 
     var INSTANCE = null;
@@ -42,7 +47,16 @@ GJ.Core = (function ()
     Core.prototype.init = function ()
     {
         var stage = $( SELECTORS.stage );
-        this.game = new GJ.Game( stage );
+        var fl2 = $( SELECTORS.frontLayer2 );
+        var fl1 = $( SELECTORS.frontLayer1 );
+        var bl1 = $( SELECTORS.backLayer1 );
+        var bl2 = $( SELECTORS.backLayer2 );
+        var bl3 = $( SELECTORS.backLayer3 );
+
+        var layers = [fl2, fl1, bl1, bl2, bl3];
+
+
+        this.game = new GJ.Game( stage, layers );
         this.game.start();
         this.serverToClient();
     };
@@ -59,7 +73,7 @@ GJ.Core = (function ()
 
     Core.prototype.serverToClient = function ()
     {
-        this.socket = io.connect( 'localhost', { port: 1337, transports: [ 'websocket' ] } );
+        this.socket = io.connect( '10.22.244.154', { port: 1337, transports: [ 'websocket' ] } );
 
         this.socket.on( 'connect', function ()
         {
