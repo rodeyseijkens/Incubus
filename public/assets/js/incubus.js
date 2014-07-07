@@ -72,7 +72,7 @@ GJ.Core = (function ()
     {
         var self = this;
 
-        this.socket = io.connect( '10.22.244.14', { port: 1337, transports: [ 'websocket' ] } );
+        this.socket = io.connect( '10.22.244.153', { port: 1337, transports: [ 'websocket' ] } );
 
         this.socket.on( 'connect', function ()
         {

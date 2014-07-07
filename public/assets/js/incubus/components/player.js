@@ -41,11 +41,12 @@ GJ.Player = (function ()
     var INSTANCE = null;
 
     // Constructor
-    var Player = function ( world, stage, layers, settings )
+    var Player = function ( world, stage, audio, layers, settings )
     {
 
         this.world = world;
         this.stage = stage;
+        this.audio = audio;
         this.lastPowerJump = new Date().getTime();
 
         // TODO Change this to a separate layer handler
@@ -305,16 +306,25 @@ GJ.Player = (function ()
 
         if ( nxpos <= 4500 )
         {
-            
+            this.audio.playSound(1, true);
         } else {
+            this.audio.playSound(2, true);
+        }
 
+
+        if ( nypos >= 800 )
+        {
+
+            $('body' ).fadeOut(1000, function(){
+                window.location = './desktop/dead.html';
+            });
         }
 
         if ( nxpos >= 9000 )
         {
             console.log('won');
             $('body' ).fadeOut(1000, function(){
-
+                window.location = './desktop/out.html';
             });
         }
 

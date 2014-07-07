@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="nl-NL">
+<head>
+    <!-- ============================ -->
+    <!--                              -->
+    <!--     4GEEKS1GIRL - 4G1G       -->
+    <!--   BRAINSEDEN GAMEJAM 2014    -->
+    <!--                              -->
+    <!-- ============================ -->
+
+    <title>Incubus</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="viewport" content="width = device-width, initial-scale = 1, user-scalable = no, minimal-ui"/>
+
+    <meta name="description" content="Content">
+    <meta name="keywords" content="4G1G">
+    <meta name="author" content="4G1G">
+    <meta name="copyright" content="4G1G">
+    <meta name="robots" content="INDEX,FOLLOW">
+    <meta name="revisit-after" content="1 week">
+    <meta name="description" content=""/>
+    <script src="../assets/js/libs/jquery.js"></script>
+
+    <style>
+        html, body {
+            background: black;
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<img class="first" src="../assets/img/INCUBUS_outro_1.jpg" height="100%"/>
+<img class="second" src="../assets/img/INCUBUS_outro_2.jpg" height="100%"/>
+
+<audio autoplay="autoplay">
+    <source src="../assets/audio/06_incubus_the_end.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
+<script>
+    $('img.first').on('click', function() {
+        $('img.first').fadeOut(200);
+    });
+
+    $('img.second').on('click', function() {
+        window.location = "index.html";
+    });
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+

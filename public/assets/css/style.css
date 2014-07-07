@@ -1,5 +1,9 @@
 @import "import/normalize.css";
 
+html {
+    height: 100%;
+}
+
 html, body {
     display: block;
     position: relative;
@@ -8,13 +12,14 @@ html, body {
 
 body {
     padding: 0;
-    margin: -40px 0 0 0;
     height: 720px;
     width: 1280px;
     background: rgb(31, 31, 31);
+
 }
 
 body.mobile {
+    margin: -40px auto 0 auto;
     background: rgb(256, 256, 256);
 }
 

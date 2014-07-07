@@ -168,7 +168,7 @@ GJ.Game = (function ()
 
         this._setWalls();
         this.entities.push(
-            new GJ.Player( this.world, this.stage, this.layers, {} ),
+            new GJ.Player( this.world, this.stage, this.audio, this.layers, {} ),
             new GJ.Obstacle( this.world, this.stage, {classname: "barrel", type: "dynamic", x: 7400, y: this.stage.height() - 80, w: 41, h: 60, figure: "box", ui: false, element: "ground", density: 10, fixRot: true} ),
 
             new GJ.Obstacle( this.world, this.stage, {classname: "obstacleT", type: "static", x: 1625, y: this.stage.height() - 120, w: 59.5, h: 1, figure: "box", ui: false, element: "ground", density: 1.5, fixRot: true} ),
@@ -193,7 +193,7 @@ GJ.Game = (function ()
 
         var wallDefs = [
             {x: (this.stage.width() / 2) / 30, y: 0, w: (this.stage.width() / 2) / 30, h: 0}, //top
-            {x: (this.stage.width() / 2) / 30, y: (this.stage.height() / 30), w: (this.stage.width() / 2) / 30, h: 0},   //bottom
+//            {x: (this.stage.width() / 2) / 30, y: (this.stage.height() / 30), w: (this.stage.width() / 2) / 30, h: 0},   //bottom
             {x: 0, y: (this.stage.height() / 2) / 30, w: 0, h: (this.stage.height() / 2) / 30},      //left
             {x: (this.stage.width() / 30), y: (this.stage.height() / 2) / 30, w: 0, h: (this.stage.height() / 2) / 30}      //left
         ];
