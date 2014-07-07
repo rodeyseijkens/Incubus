@@ -59,11 +59,11 @@ function onSocketConnection( client )
         }
     } );
 
-    client.on( 'barrelPush', function ()
+    client.on( 'barrelPush', function ( dir )
     {
         for ( var i = 0; i < clients.length; i++ )
         {
-            clients[i].emit( 'barrelPush' );
+            clients[i].emit( 'barrelPush', dir );
         }
     } );
 

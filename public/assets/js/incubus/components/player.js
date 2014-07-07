@@ -218,6 +218,8 @@ GJ.Player = (function ()
                 (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "bridge"))
             {
                 self.jumping = true;
+
+                console.log( typeof self.player.GetContactList().next );
             }
 
             if( (aBody.GetUserData().element == "entity" && bBody.GetUserData().element == "player") || (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "entity")) {

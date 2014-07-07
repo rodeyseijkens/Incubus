@@ -155,21 +155,21 @@ GJ.Game = (function ()
         this._setWalls();
         this.entities.push(
             new GJ.Player( this.world, this.stage, this.layers, {} ),
-            new GJ.Obstacle( this.world, this.stage, {classname: "barrel", type: "dynamic", x: 500, y: this.stage.height() - 80, w: 41, h: 60, figure: "box", ui: false, element: "ground", fixRot: true} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "barrel", type: "dynamic", x: 7400, y: this.stage.height() - 80, w: 41, h: 60, figure: "box", ui: false, element: "ground", density: 10, fixRot: true} ),
 
-            new GJ.Obstacle( this.world, this.stage, {classname: "obstacleT", type: "static", x: 1625, y: this.stage.height() - 120, w: 59.5, h: 1, figure: "box", ui: false, element: "ground"} ),
-            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1625, y: this.stage.height() - 60, w: 60, h: 60, figure: "box", ui: false, element: "entity"} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacleT", type: "static", x: 1625, y: this.stage.height() - 120, w: 59.5, h: 1, figure: "box", ui: false, element: "ground", density: 1.5, fixRot: true} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1625, y: this.stage.height() - 60, w: 60, h: 60, figure: "box", ui: false, element: "entity", density: 1.5, fixRot: true} ),
 
-            new GJ.Obstacle( this.world, this.stage, {classname: "obstacleT", type: "static", x: 3165, y: this.stage.height() - 240, w: 99.5, h: 1, figure: "box", ui: false, element: "ground"} ),
-            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 3165, y: this.stage.height() - 120, w: 100, h: 120, figure: "box", ui: false, element: "entity"} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacleT", type: "static", x: 3165, y: this.stage.height() - 240, w: 99.5, h: 1, figure: "box", ui: false, element: "ground", density: 1.5, fixRot: true} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 3165, y: this.stage.height() - 120, w: 100, h: 120, figure: "box", ui: false, element: "entity", density: 1.5, fixRot: true} ),
 
-            new GJ.Obstacle( this.world, this.stage, {classname: "obstacleT", type: "static", x: 8380, y: this.stage.height() - 340, w: 99.5, h: 1, figure: "box", ui: false, element: "ground"} ),
-            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 8380, y: this.stage.height() - 220, w: 100, h: 220, figure: "box", ui: false, element: "entity"} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacleT", type: "static", x: 8290, y: this.stage.height() - 380, w: 44.5, h: 1, figure: "box", ui: false, element: "ground", density: 1.5, fixRot: true} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 8290, y: this.stage.height() - 190, w: 45, h: 190, figure: "box", ui: false, element: "entity", density: 1.5, fixRot: true} ),
 
 //            new GJ.UI(this.world, this.stage, {obj: "bridge"}),
 
-            new GJ.Obstacle( this.world, this.stage, {classname: "ground", type: "static", x: 0, y: this.stage.height() - 20, w: 5200, h: 10, figure: "box", ui: false, element: "ground"} ),
-            new GJ.Obstacle( this.world, this.stage, {classname: "ground", type: "static", x: 7650, y: this.stage.height() - 20, w: 1750, h: 10, figure: "box", ui: false, element: "ground"} )
+            new GJ.Obstacle( this.world, this.stage, {classname: "ground", type: "static", x: 0, y: this.stage.height() - 20, w: 5200, h: 10, figure: "box", ui: false, element: "ground", density: 1.5, fixRot: true} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "ground", type: "static", x: 7650, y: this.stage.height() - 20, w: 1750, h: 10, figure: "box", ui: false, element: "ground", density: 1.5, fixRot: true} )
         );
     };
 
@@ -178,7 +178,7 @@ GJ.Game = (function ()
     {
 
         var wallDefs = [
-//            {x: (this.stage.width() / 2) / 30, y: 0, w: (this.stage.width() / 2) / 30, h: 0}, //top
+            {x: (this.stage.width() / 2) / 30, y: 0, w: (this.stage.width() / 2) / 30, h: 0}, //top
             {x: (this.stage.width() / 2) / 30, y: (this.stage.height() / 30), w: (this.stage.width() / 2) / 30, h: 0},   //bottom
             {x: 0, y: (this.stage.height() / 2) / 30, w: 0, h: (this.stage.height() / 2) / 30},      //left
             {x: (this.stage.width() / 30), y: (this.stage.height() / 2) / 30, w: 0, h: (this.stage.height() / 2) / 30}      //left
@@ -290,7 +290,6 @@ GJ.Game = (function ()
         $("body").hammer().on( "doubletap", function ( event )
         {
             self.socket.emit('powerJump');
-            self.socket.emit('barrelPush');
         } );
 
 
@@ -298,6 +297,14 @@ GJ.Game = (function ()
         $(".barrel").hammer().on( "swiperight", function ( event )
         {
             event.preventDefault();
+            self.socket.emit('barrelPush', 'right');
+
+        } );
+
+        $(".barrel").hammer().on( "swipeleft", function ( event )
+        {
+            event.preventDefault();
+            self.socket.emit('barrelPush', 'left');
 
         } );
 

@@ -1,14 +1,15 @@
 /**
  * Incubus Game
  *
- * @date		04.07.2014
- * @version		0.1
- * @author		Maarten Oerlemans - Brainseden 2014
+ * @date        04.07.2014
+ * @version        0.1
+ * @author        Maarten Oerlemans - Brainseden 2014
  * @depend      jQuery.js
  */
 
 // Namespacing
-if (GJ == null || typeof(GJ) != 'object') {
+if ( GJ == null || typeof(GJ) != 'object' )
+{
     var GJ = {};
 }
 
@@ -40,65 +41,68 @@ GJ.Obstacle = (function ()
     var INSTANCE = null;
 
     // Constructor
-    var Obstacle = function(world, stage, settings)
+    var Obstacle = function ( world, stage, settings )
     {
 
         this.world = world;
         this.stage = stage;
         this.__classId = ((( 1 + Math.random()) * 0x10000) | 0) + new Date().getTime();
 
-        this.settings = $.extend(SETTINGS, settings);
+        this.settings = $.extend( SETTINGS, settings );
         this.init();
 
     };
 
-    Obstacle.prototype.scaleDown = function(value) {
+    Obstacle.prototype.scaleDown = function ( value )
+    {
         return value / 30;
 
     };
 
-    Obstacle.prototype.scaleUp = function(value) {
+    Obstacle.prototype.scaleUp = function ( value )
+    {
         return value * 30;
     };
 
-    Obstacle.prototype.create = function()
+    Obstacle.prototype.create = function ()
     {
         var obsDef = new b2BodyDef;
         obsDef.type = (this.settings.type == "dynamic") ? b2Body.b2_dynamicBody : b2Body.b2_staticBody;
 
-        var x = this.scaleDown(this.settings.x),
-            y = this.scaleDown(this.settings.y),
-            w = this.scaleDown(this.settings.w),
-            h = this.scaleDown(this.settings.h);
+        var x = this.scaleDown( this.settings.x ),
+            y = this.scaleDown( this.settings.y ),
+            w = this.scaleDown( this.settings.w ),
+            h = this.scaleDown( this.settings.h );
 
         var element = this.settings.element || "entity";
 
-        obsDef.position.Set(x, y);
+        obsDef.position.Set( x, y );
         var obsFix = new b2FixtureDef;
-        obsFix.density = 1.5;
+        obsFix.density = this.settings.density;
         obsFix.friction = 1;
         obsFix.restitution = 0;
 
-        obsFix.shape = (this.settings.figure == "box") ? new b2PolygonShape : new b2CircleShape(this.settings.w);
-        if(this.settings.figure == "box") {
-            obsFix.shape.SetAsBox(w, h);
+        obsFix.shape = (this.settings.figure == "box") ? new b2PolygonShape : new b2CircleShape( this.settings.w );
+        if ( this.settings.figure == "box" )
+        {
+            obsFix.shape.SetAsBox( w, h );
         }
 
-        var newObs = this.world.CreateBody(obsDef);
-        newObs.CreateFixture(obsFix);
-        newObs.SetUserData({element: element, w: this.scaleUp(w), h: this.scaleUp(h), ui: this.settings.ui, type: this.settings.type });
+        var newObs = this.world.CreateBody( obsDef );
+        newObs.CreateFixture( obsFix );
+        newObs.SetUserData( {element: element, w: this.scaleUp( w ), h: this.scaleUp( h ), ui: this.settings.ui, type: this.settings.type } );
 
-        this.node = document.createElement('div');
+        this.node = document.createElement( 'div' );
         this.node.className = this.settings.classname;
-        this.node.style.width = (this.scaleUp(w) * 2) + "px";
-        this.node.style.height = (this.scaleUp(h) * 2) + "px";
+        this.node.style.width = (this.scaleUp( w ) * 2) + "px";
+        this.node.style.height = (this.scaleUp( h ) * 2) + "px";
 
-        var nxpos = (this.scaleUp(x) - this.scaleUp(w));
-        var nypos = (this.scaleUp(y) - this.scaleUp(h));
+        var nxpos = (this.scaleUp( x ) - this.scaleUp( w ));
+        var nypos = (this.scaleUp( y ) - this.scaleUp( h ));
 //        var sin = Math.sin(newObs.GetAngle()), cos = Math.cos(newObs.GetAngle());
 //        this.node.style.webkitTransform = 'matrix(' + cos + ',' + sin + ',' + -sin + ',' + cos + ',' + nxpos + ',' + nypos + ')';
-        $(this.node).css( 'transform', 'translate(' + nxpos + 'px,' + nypos + 'px) rotate('+newObs.GetAngle()+'rad)');
-        this.stage.append(this.node);
+        $( this.node ).css( 'transform', 'translate(' + nxpos + 'px,' + nypos + 'px) rotate(' + newObs.GetAngle() + 'rad)' );
+        this.stage.append( this.node );
 
         return newObs;
     };
@@ -107,16 +111,21 @@ GJ.Obstacle = (function ()
     Obstacle.prototype.init = function ()
     {
         this.obstacle = this.create();
-        this.obstacle.SetFixedRotation(this.settings.fixRot);
+        this.obstacle.SetFixedRotation( this.settings.fixRot );
     };
 
-    Obstacle.prototype.pulse = function ()
+    Obstacle.prototype.pulse = function ( dir )
     {
-        this.obstacle.ApplyImpulse( new b2Vec2( 15, 0 ), this.obstacle.GetWorldCenter() );
+        if(dir == 'right') {
+            this.obstacle.ApplyImpulse( new b2Vec2( 3000, 0 ), this.obstacle.GetWorldCenter() );
+        } else {
+
+            this.obstacle.ApplyImpulse( new b2Vec2( -3000, 0 ), this.obstacle.GetWorldCenter() );
+        }
     };
 
 
-    Obstacle.prototype.render = function()
+    Obstacle.prototype.render = function ()
     {
         var userdata = this.obstacle.GetUserData();
 
@@ -125,11 +134,11 @@ GJ.Obstacle = (function ()
 //        var sin = Math.sin(this.obstacle.GetAngle()), cos = Math.cos(this.obstacle.GetAngle());
 //        this.node.style.webkitTransform = 'matrix(' + cos + ',' + sin + ',' + -sin + ',' + cos + ',' + nxpos + ',' + nypos + ')';
 
-        $(this.node).css( 'transform', 'translate(' + nxpos + 'px,' + nypos + 'px) rotate('+this.obstacle.GetAngle()+'rad)');
+        $( this.node ).css( 'transform', 'translate(' + nxpos + 'px,' + nypos + 'px) rotate(' + this.obstacle.GetAngle() + 'rad)' );
 
     };
 
-    Obstacle.prototype.mobileRender = function(mWorldCenter, mAngle)
+    Obstacle.prototype.mobileRender = function ( mWorldCenter, mAngle )
     {
         var userdata = this.obstacle.GetUserData();
 
@@ -137,7 +146,7 @@ GJ.Obstacle = (function ()
         var nypos = (mWorldCenter.y * 30) - userdata.h;
 //        var sin = Math.sin(mAngle), cos = Math.cos(mAngle);
 //        this.node.style.webkitTransform = 'matrix(' + cos + ',' + sin + ',' + -sin + ',' + cos + ',' + nxpos + ',' + nypos + ')';
-        $(this.node).css( 'transform', 'translate(' + nxpos + 'px,' + nypos + 'px) rotate('+mAngle+'rad)');
+        $( this.node ).css( 'transform', 'translate(' + nxpos + 'px,' + nypos + 'px) rotate(' + mAngle + 'rad)' );
 
     };
 

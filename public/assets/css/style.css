@@ -99,15 +99,15 @@ canvas {
 }
 
 .ground {
-    background: red;
+    background: none;
 }
 
 .obstacleT {
-    background: blue;
+    background: none;
 }
 
 .obstacle, .holder {
-    background-color: none;
+    background: none;
     opacity: 1;
     position: absolute;
     top: 0;
@@ -296,7 +296,7 @@ canvas {
 
 .lion {
     background: url(../img/desktop/Town_b_lion.png) no-repeat center center;
-    height: 400px;
+    height: 440px;
     width: 329px;
     display: block;
     position: absolute;

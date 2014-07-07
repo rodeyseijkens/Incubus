@@ -94,9 +94,9 @@ GJ.Core = (function ()
         } );
 
 
-        this.socket.on( 'barrelPush', function ()
+        this.socket.on( 'barrelPush', function ( dir )
         {
-            self.game.entities[1].pulse();
+            self.game.entities[1].pulse( dir );
         } );
 
         this.socket.on( 'disconnect', function ()
