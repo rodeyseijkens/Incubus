@@ -93,6 +93,12 @@ GJ.Core = (function ()
             self.game.entities[0].powerJump();
         } );
 
+
+        this.socket.on( 'barrelPush', function ()
+        {
+            self.game.entities[1].pulse();
+        } );
+
         this.socket.on( 'disconnect', function ()
         {
             console.log( 'The client has disconnected!' );

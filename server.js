@@ -59,6 +59,14 @@ function onSocketConnection( client )
         }
     } );
 
+    client.on( 'barrelPush', function ()
+    {
+        for ( var i = 0; i < clients.length; i++ )
+        {
+            clients[i].emit( 'barrelPush' );
+        }
+    } );
+
     client.on( 'serverEntitiesSend', function ( data )
     {
         // SEND DATA TO CLIENT

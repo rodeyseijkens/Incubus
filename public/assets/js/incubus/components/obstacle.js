@@ -95,8 +95,9 @@ GJ.Obstacle = (function ()
 
         var nxpos = (this.scaleUp(x) - this.scaleUp(w));
         var nypos = (this.scaleUp(y) - this.scaleUp(h));
-        var sin = Math.sin(newObs.GetAngle()), cos = Math.cos(newObs.GetAngle());
-        this.node.style.webkitTransform = 'matrix(' + cos + ',' + sin + ',' + -sin + ',' + cos + ',' + nxpos + ',' + nypos + ')';
+//        var sin = Math.sin(newObs.GetAngle()), cos = Math.cos(newObs.GetAngle());
+//        this.node.style.webkitTransform = 'matrix(' + cos + ',' + sin + ',' + -sin + ',' + cos + ',' + nxpos + ',' + nypos + ')';
+        $(this.node).css( 'transform', 'translate(' + nxpos + 'px,' + nypos + 'px) rotate('+newObs.GetAngle()+'rad)');
         this.stage.append(this.node);
 
         return newObs;
@@ -106,22 +107,14 @@ GJ.Obstacle = (function ()
     Obstacle.prototype.init = function ()
     {
         this.obstacle = this.create();
-        this.bind();
+        this.obstacle.SetFixedRotation(this.settings.fixRot);
     };
 
-    Obstacle.prototype.bind = function()
+    Obstacle.prototype.pulse = function ()
     {
-        document.addEventListener('keydown', function(e) {
-            e.preventDefault();
-            var key = e.which || e.keyCode;
-            KEYS[key] = true;
-        }, false);
-        document.addEventListener('keyup', function(e) {
-            e.preventDefault();
-            var key = e.which || e.keyCode;
-            KEYS[key] = false;
-        }, false);
+        this.obstacle.ApplyImpulse( new b2Vec2( 15, 0 ), this.obstacle.GetWorldCenter() );
     };
+
 
     Obstacle.prototype.render = function()
     {

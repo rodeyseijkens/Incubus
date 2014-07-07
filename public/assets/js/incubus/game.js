@@ -86,6 +86,11 @@ GJ.Game = (function ()
         {
             event.preventDefault();
         } );
+
+        $( '.barrel' ).on( 'touchstart', function ( event )
+        {
+            event.preventDefault();
+        } );
     };
 
     // Initialize (public)
@@ -150,15 +155,24 @@ GJ.Game = (function ()
         this._setWalls();
         this.entities.push(
             new GJ.Player( this.world, this.stage, this.layers, {} ),
-//            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1200, y: this.stage.height() - 150, w: 270, h: 1, figure: "box", ui: false, element: "ground"} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "barrel", type: "dynamic", x: 500, y: this.stage.height() - 80, w: 41, h: 60, figure: "box", ui: false, element: "ground", fixRot: true} ),
+
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacleT", type: "static", x: 1625, y: this.stage.height() - 120, w: 59.5, h: 1, figure: "box", ui: false, element: "ground"} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1625, y: this.stage.height() - 60, w: 60, h: 60, figure: "box", ui: false, element: "entity"} ),
+
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacleT", type: "static", x: 3165, y: this.stage.height() - 240, w: 99.5, h: 1, figure: "box", ui: false, element: "ground"} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 3165, y: this.stage.height() - 120, w: 100, h: 120, figure: "box", ui: false, element: "entity"} ),
+
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacleT", type: "static", x: 8380, y: this.stage.height() - 340, w: 99.5, h: 1, figure: "box", ui: false, element: "ground"} ),
+            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 8380, y: this.stage.height() - 220, w: 100, h: 220, figure: "box", ui: false, element: "entity"} ),
+
+//            new GJ.UI(this.world, this.stage, {obj: "bridge"}),
+
             new GJ.Obstacle( this.world, this.stage, {classname: "ground", type: "static", x: 0, y: this.stage.height() - 20, w: 5200, h: 10, figure: "box", ui: false, element: "ground"} ),
-            new GJ.Obstacle( this.world, this.stage, {classname: "ground", type: "static", x: 7650, y: this.stage.height() - 20, w: 1750, h: 10, figure: "box", ui: false, element: "ground"} ),
-            new GJ.Obstacle( this.world, this.stage, {classname: "barrel", type: "static", x: 7500, y: this.stage.height() - 80, w: 41, h: 60, figure: "box", ui: false, element: "entity"} ),
-//            new GJ.Obstacle( this.world, this.stage, {classname: "barrel", type: "static", x: 8400, y: this.stage.height() - 80, w: 41, h: 60, figure: "box", ui: false, element: "entity"} ),
-            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "dynamic", x: 250, y: 50, w: 30, h: 30, figure: "box", ui: false, element: "entity"} )
-//            new GJ.Obstacle( this.world, this.stage, {classname: "obstacle", type: "static", x: 1900, y: this.stage.height() - 150, w: 170, h: 150, figure: "box", ui: false, element: "entity"} )
+            new GJ.Obstacle( this.world, this.stage, {classname: "ground", type: "static", x: 7650, y: this.stage.height() - 20, w: 1750, h: 10, figure: "box", ui: false, element: "ground"} )
         );
     };
+
 
     Game.prototype._setWalls = function ()
     {
@@ -248,13 +262,20 @@ GJ.Game = (function ()
 
                     newEnitiylist.push( {eID: i, angle: this.entities[i].player.GetAngle(), center: this.entities[i].player.GetWorldCenter() } );
                 }
+                else if ( this.entities[i].UI )
+                {
+
+                    newEnitiylist.push( {eID: i, angle: this.entities[i].UI.GetAngle(), center: this.entities[i].UI.GetWorldCenter() } );
+                }
             }
 
             this.socket.emit( 'serverEntitiesSend', {id: this.clientID, enityList: newEnitiylist} );
         }
 
         this.world.Step( 1 / 60, 10, 10 );
-//        this.world.DrawDebugData();
+        if(this.debug) {
+            this.world.DrawDebugData();
+        }
         this.world.ClearForces();
 //        console.log('render');
 
@@ -269,6 +290,15 @@ GJ.Game = (function ()
         $("body").hammer().on( "doubletap", function ( event )
         {
             self.socket.emit('powerJump');
+            self.socket.emit('barrelPush');
+        } );
+
+
+
+        $(".barrel").hammer().on( "swiperight", function ( event )
+        {
+            event.preventDefault();
+
         } );
 
 

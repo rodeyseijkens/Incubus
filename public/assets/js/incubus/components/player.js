@@ -107,13 +107,17 @@ GJ.Player = (function ()
     {
 
         var v = 0;
+        var speed = 15;
 
         if(KEYS[39]) {
 
+            if(this.wallHitRight) {
+                return;
+            }
 
-            if ( this.player.GetLinearVelocity().x < 45 )
+            if ( this.player.GetLinearVelocity().x < speed )
             {
-                v = 45;
+                v = speed;
             }
             this.player.ApplyImpulse( new b2Vec2( v, 0 ), this.player.GetWorldCenter() );
             this.direction = "right";
@@ -121,11 +125,15 @@ GJ.Player = (function ()
 
         if ( KEYS[37] )
         {
-
-            if ( this.player.GetLinearVelocity().x > -45 )
-            {
-                v = -45;
+            if(this.wallHitLeft) {
+                return;
             }
+
+            if ( this.player.GetLinearVelocity().x > -speed )
+            {
+                v = -speed;
+            }
+
             this.player.ApplyImpulse( new b2Vec2( v, 0 ), this.player.GetWorldCenter() );
 
             this.direction = "left";
@@ -151,7 +159,7 @@ GJ.Player = (function ()
         if(this.jumping) {
 
             var now = new Date().getTime();
-            if( (now - this.lastPowerJump) > 1000 ) {
+            if( (now - this.lastPowerJump) > 1500 ) {
                 this.player.ApplyImpulse( new b2Vec2( 0, -200 ), this.player.GetWorldCenter() );
                 this.lastPowerJump = new Date().getTime();
             }
@@ -164,6 +172,8 @@ GJ.Player = (function ()
         var self = this;
 
         this.listener = new b2Listener;
+
+
         this.listener.BeginContact = function(contact) {
             var aBody = contact.GetFixtureA().GetBody(),
                 bBody = contact.GetFixtureB().GetBody();
@@ -172,11 +182,27 @@ GJ.Player = (function ()
                 return
             }
 
-            if(aBody.GetUserData().element == "ground" && bBody.GetUserData().element == "player") {
-                self.jumping = false;
-            } else if(aBody.GetUserData().element == "player" && bBody.GetUserData().element == "ground") {
+            if( (aBody.GetUserData().element == "ground" && bBody.GetUserData().element == "player") ||
+                (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "ground") ||
+                (aBody.GetUserData().element == "bridge" && bBody.GetUserData().element == "player") ||
+                (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "bridge"))
+            {
                 self.jumping = false;
             }
+
+            if( (aBody.GetUserData().element == "entity" && bBody.GetUserData().element == "player") || (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "entity")) {
+                if(bBody.GetUserData().type == "dynamic") {
+                    return;
+                }
+                if(aBody.GetWorldCenter().x < bBody.GetWorldCenter().x) {
+                    self.wallHitRight = true;
+                }
+                if(aBody.GetWorldCenter().x > bBody.GetWorldCenter().x) {
+                    self.wallHitLeft = true;
+                }
+
+            }
+
         };
         this.listener.EndContact = function(contact) {
             var aBody = contact.GetFixtureA().GetBody(),
@@ -186,10 +212,17 @@ GJ.Player = (function ()
                 return
             }
 
-            if(aBody.GetUserData().element == "ground" && bBody.GetUserData().element == "player") {
+            if( (aBody.GetUserData().element == "ground" && bBody.GetUserData().element == "player") ||
+                (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "ground") ||
+                (aBody.GetUserData().element == "bridge" && bBody.GetUserData().element == "player") ||
+                (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "bridge"))
+            {
                 self.jumping = true;
-            } else if(aBody.GetUserData().element == "player" && bBody.GetUserData().element == "ground") {
-                self.jumping = true;
+            }
+
+            if( (aBody.GetUserData().element == "entity" && bBody.GetUserData().element == "player") || (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "entity")) {
+                self.wallHitRight = false;
+                self.wallHitLeft = false;
             }
         };
 
