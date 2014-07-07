@@ -144,6 +144,20 @@ GJ.Game = (function ()
 
         this.world = new b2World( new b2Vec2( 0, 60 ), false );
 
+        if(!this.isMobile) {
+            var audioset = [
+                "assets/audio/01_intro.mp3",
+                "assets/audio/02_forest.mp3",
+                "assets/audio/03_incubus_city.mp3",
+                "assets/audio/04_incubus_cave.mp3",
+                "assets/audio/06_incubus_the_end.mp3"
+            ];
+            this.audio = new GJ.Audio(audioset);
+            this.audio.on('loaded', function() {
+                this.audio.playSound(1, true);
+            }.bind(this));
+        }
+
 //        this.debugDraw = new b2DebugDraw();
 //        this.debugDraw.SetSprite( this.ctx );
 //        this.debugDraw.SetDrawScale( this.scaleFactor );     //define scale

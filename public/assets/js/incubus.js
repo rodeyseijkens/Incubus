@@ -54,6 +54,14 @@ GJ.Core = (function ()
 
         var layers = [fl2, fl1, bl1, bl2, bl3];
 
+        var audioset = [
+            "assets/audio/01_intro.mp3",
+            "assets/audio/02_forest.mp3",
+            "assets/audio/03_incubus_city.mp3",
+            "assets/audio/04_incubus_cave.mp3",
+            "assets/audio/05_incubus_endgame.mp3",
+            "assets/audio/06_incubus_the_end.mp3"
+        ];
 
         this.game = new GJ.Game( stage, layers );
         this.serverToClient();
@@ -64,7 +72,7 @@ GJ.Core = (function ()
     {
         var self = this;
 
-        this.socket = io.connect( '10.22.244.153', { port: 1337, transports: [ 'websocket' ] } );
+        this.socket = io.connect( '10.22.244.14', { port: 1337, transports: [ 'websocket' ] } );
 
         this.socket.on( 'connect', function ()
         {
