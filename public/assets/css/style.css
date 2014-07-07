@@ -304,6 +304,26 @@ canvas {
     left: 8230px;
 }
 
+.cityB2 {
+    background: url(../img/desktop/Town_b2_houses.png) no-repeat center center;
+    height: 720px;
+    width: 1853px;
+    display: block;
+    position: absolute;
+    bottom: -1px;
+    left: 4100px;
+}
+
+.end {
+    background: url(../img/desktop/Town_b_cubes.png) no-repeat center center;
+    height: 283px;
+    width: 300px;
+    display: block;
+    position: absolute;
+    bottom: 60px;
+    left: 8930px;
+}
+
 #camera-mob .player {
     background-color: black;
 }
@@ -325,4 +345,12 @@ canvas {
 
 #camera-mob .treeB2 {
     background: url(../img/mobile/FOR_b2_tree.png) no-repeat center center;
+}
+
+#camera-mob .cityB2 {
+    background: url(../img/mobile/Town_b2_houses.png) no-repeat center center;
+}
+
+#camera-mob .end {
+    background: url(../img/mobile/Town_b_cubes.png) no-repeat center center;
 }

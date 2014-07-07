@@ -1,9 +1,9 @@
 /**
  * Incubus Game
  *
- * @date		04.07.2014
- * @version		0.1
- * @author		Maarten Oerlemans - Brainseden 2014
+ * @date        04.07.2014
+ * @version        0.1
+ * @author        Maarten Oerlemans - Brainseden 2014
  * @depend      jQuery.js
  */
 
@@ -49,11 +49,11 @@ GJ.Player = (function ()
         this.lastPowerJump = new Date().getTime();
 
         // TODO Change this to a separate layer handler
-        this.frontLayer2 =  layers[0];
-        this.frontLayer1 =  layers[1];
-        this.backLayer1 =  layers[2];
-        this.backLayer2 =  layers[3];
-        this.backLayer3 =  layers[4];
+        this.frontLayer2 = layers[0];
+        this.frontLayer1 = layers[1];
+        this.backLayer1 = layers[2];
+        this.backLayer2 = layers[3];
+        this.backLayer3 = layers[4];
 
         this.__classId = ((( 1 + Math.random()) * 0x10000) | 0) + new Date().getTime();
 
@@ -69,18 +69,18 @@ GJ.Player = (function ()
         var ypos = 12;
         var xpos = 12;
         var size = (30 / 30);
-        ballDef.position.Set(xpos, ypos);
+        ballDef.position.Set( xpos, ypos );
         var ballFixture = new b2FixtureDef;
         ballFixture.density = 1.5;
         ballFixture.friction = 1;
         ballFixture.restitution = 0;
-        ballFixture.shape =  new b2PolygonShape(size);
-        ballFixture.shape.SetAsBox(size, size);
-        var newBall = this.world.CreateBody(ballDef);
-        newBall.CreateFixture(ballFixture);
-        newBall.SetUserData({element: "player", w: size * 30, h: size * 30});
+        ballFixture.shape = new b2PolygonShape( size );
+        ballFixture.shape.SetAsBox( size, size );
+        var newBall = this.world.CreateBody( ballDef );
+        newBall.CreateFixture( ballFixture );
+        newBall.SetUserData( {element: "player", w: size * 30, h: size * 30} );
 
-        this.node = document.createElement('div');
+        this.node = document.createElement( 'div' );
         this.node.className = 'player';
         this.node.style.width = (size * 30) * 2 + "px";
         this.node.style.height = (size * 30) * 2 + "px";
@@ -89,7 +89,7 @@ GJ.Player = (function ()
         var nypos = (ypos * 30) - (size * 30);
 
         this.node.style.webkitTransform = 'matrix(1,0,0,1,' + nxpos + ',' + nypos + ')';
-        this.stage.append(this.node);
+        this.stage.append( this.node );
 
         return newBall;
     };
@@ -98,20 +98,22 @@ GJ.Player = (function ()
     Player.prototype.init = function ()
     {
         this.player = this.create();
-        this.player.SetFixedRotation(true);
+        this.player.SetFixedRotation( true );
         this.collision();
         this.bind();
     };
 
-    Player.prototype.move = function()
+    Player.prototype.move = function ()
     {
 
         var v = 0;
         var speed = 15;
 
-        if(KEYS[39]) {
+        if ( KEYS[39] )
+        {
 
-            if(this.wallHitRight) {
+            if ( this.wallHitRight )
+            {
                 return;
             }
 
@@ -125,7 +127,8 @@ GJ.Player = (function ()
 
         if ( KEYS[37] )
         {
-            if(this.wallHitLeft) {
+            if ( this.wallHitLeft )
+            {
                 return;
             }
 
@@ -141,32 +144,39 @@ GJ.Player = (function ()
 
         if ( KEYS[32] )
         {
-            if(this.jumping) {
+            if ( this.jumping )
+            {
                 v = 0;
-            } else {
+            }
+            else
+            {
                 v = -80;
             }
             this.player.ApplyImpulse( new b2Vec2( 0, v ), this.player.GetWorldCenter() );
         }
     };
 
-    Player.prototype.powerJump = function() {
+    Player.prototype.powerJump = function ()
+    {
 
-        if(this.lastPowerJump == null) {
+        if ( this.lastPowerJump == null )
+        {
             this.lastPowerJump = new Date().getTime();
         }
 
-        if(this.jumping) {
+        if ( this.jumping )
+        {
 
             var now = new Date().getTime();
-            if( (now - this.lastPowerJump) > 1500 ) {
+            if ( (now - this.lastPowerJump) > 1500 )
+            {
                 this.player.ApplyImpulse( new b2Vec2( 0, -200 ), this.player.GetWorldCenter() );
                 this.lastPowerJump = new Date().getTime();
             }
         }
     };
 
-    Player.prototype.collision = function()
+    Player.prototype.collision = function ()
     {
 
         var self = this;
@@ -174,65 +184,74 @@ GJ.Player = (function ()
         this.listener = new b2Listener;
 
 
-        this.listener.BeginContact = function(contact) {
+        this.listener.BeginContact = function ( contact )
+        {
             var aBody = contact.GetFixtureA().GetBody(),
                 bBody = contact.GetFixtureB().GetBody();
 
-            if(aBody.GetUserData() == null || bBody.GetUserData() == null) {
+            if ( aBody.GetUserData() == null || bBody.GetUserData() == null )
+            {
                 return
             }
 
-            if( (aBody.GetUserData().element == "ground" && bBody.GetUserData().element == "player") ||
+            if ( (aBody.GetUserData().element == "ground" && bBody.GetUserData().element == "player") ||
                 (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "ground") ||
                 (aBody.GetUserData().element == "bridge" && bBody.GetUserData().element == "player") ||
-                (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "bridge"))
+                (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "bridge") )
             {
                 self.jumping = false;
             }
 
-            if( (aBody.GetUserData().element == "entity" && bBody.GetUserData().element == "player") || (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "entity")) {
-                if(bBody.GetUserData().type == "dynamic") {
+            if ( (aBody.GetUserData().element == "entity" && bBody.GetUserData().element == "player") || (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "entity") )
+            {
+                if ( bBody.GetUserData().type == "dynamic" )
+                {
                     return;
                 }
-                if(aBody.GetWorldCenter().x < bBody.GetWorldCenter().x) {
+                if ( aBody.GetWorldCenter().x < bBody.GetWorldCenter().x )
+                {
                     self.wallHitRight = true;
                 }
-                if(aBody.GetWorldCenter().x > bBody.GetWorldCenter().x) {
+                if ( aBody.GetWorldCenter().x > bBody.GetWorldCenter().x )
+                {
                     self.wallHitLeft = true;
                 }
 
             }
 
         };
-        this.listener.EndContact = function(contact) {
+        this.listener.EndContact = function ( contact )
+        {
             var aBody = contact.GetFixtureA().GetBody(),
                 bBody = contact.GetFixtureB().GetBody();
 
-            if(aBody.GetUserData() == null || bBody.GetUserData() == null) {
+            if ( aBody.GetUserData() == null || bBody.GetUserData() == null )
+            {
                 return
             }
 
-            if( (aBody.GetUserData().element == "ground" && bBody.GetUserData().element == "player") ||
+            if ( (aBody.GetUserData().element == "ground" && bBody.GetUserData().element == "player") ||
                 (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "ground") ||
                 (aBody.GetUserData().element == "bridge" && bBody.GetUserData().element == "player") ||
-                (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "bridge"))
+                (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "bridge") )
             {
                 self.jumping = true;
 
                 console.log( typeof self.player.GetContactList().next );
             }
 
-            if( (aBody.GetUserData().element == "entity" && bBody.GetUserData().element == "player") || (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "entity")) {
+            if ( (aBody.GetUserData().element == "entity" && bBody.GetUserData().element == "player") || (aBody.GetUserData().element == "player" && bBody.GetUserData().element == "entity") )
+            {
                 self.wallHitRight = false;
                 self.wallHitLeft = false;
             }
         };
 
-        this.world.SetContactListener(this.listener);
+        this.world.SetContactListener( this.listener );
     };
 
 
-    Player.prototype.bind = function()
+    Player.prototype.bind = function ()
     {
         document.addEventListener( 'keydown', function ( e )
         {
@@ -257,7 +276,7 @@ GJ.Player = (function ()
         var nxpos = (this.player.GetWorldCenter().x * 30) - userdata.w;
         var nypos = (this.player.GetWorldCenter().y * 30) - userdata.h;
 
-        $(this.node).css( 'webkitTransform', 'translate(' + nxpos + 'px,' + nypos + 'px)' );
+        $( this.node ).css( 'webkitTransform', 'translate(' + nxpos + 'px,' + nypos + 'px)' );
 
         var stageStyle = new WebKitCSSMatrix( window.getComputedStyle( this.stage[0] ).webkitTransform );
 
@@ -284,10 +303,25 @@ GJ.Player = (function ()
         this.frontLayer1.css( 'webkitTransform', 'translate(' + (stageStyle.e) + 'px,' + 0 + 'px)' );
         this.frontLayer2.css( 'webkitTransform', 'translate(' + (stageStyle.e * 1.5) + 'px,' + 0 + 'px)' );
 
+        if ( nxpos <= 4500 )
+        {
+            
+        } else {
+
+        }
+
+        if ( nxpos >= 9000 )
+        {
+            console.log('won');
+            $('body' ).fadeOut(1000, function(){
+
+            });
+        }
+
     };
 
 
-    Player.prototype.mobileRender = function(mWorldCenter, mAngle)
+    Player.prototype.mobileRender = function ( mWorldCenter, mAngle )
     {
         this.move();
         var userdata = this.player.GetUserData();
